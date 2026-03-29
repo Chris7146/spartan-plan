@@ -1,0 +1,1207 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <meta name="apple-mobile-web-app-title" content="Spartan Plan">
+    <meta name="theme-color" content="#0e1412">
+    <meta name="description" content="Plan d'entraînement Spartan Race - Super 10km">
+    <title>Spartan Plan</title>
+
+    <link rel="manifest" href="manifest.json">
+    <link rel="apple-touch-icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 180 180'%3E%3Crect fill='%23e63946' width='180' height='180' rx='32'/%3E%3Ctext x='90' y='125' font-size='90' font-weight='bold' fill='%23e8ede9' text-anchor='middle'%3E%E2%9A%94%3C/text%3E%3C/svg%3E">
+
+    <style>
+        :root {
+            --bg-primary: #0e1412;
+            --bg-secondary: #1a2420;
+            --accent: #e63946;
+            --accent-secondary: #22c980;
+            --text-primary: #e8ede9;
+            --text-secondary: #b0b9b3;
+            --border: rgba(255,255,255,0.08);
+            --safe-area-inset-bottom: max(env(safe-area-inset-bottom), 16px);
+
+            --color-recovery: #22c980;
+            --color-hyrox: #f0a500;
+            --color-grip: #e63946;
+            --color-cardio: #4a9eff;
+            --color-force: #9b59b6;
+            --color-cardio-z2: #1abc9c;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            -webkit-tap-highlight-color: transparent;
+        }
+
+        body {
+            font-family: -apple-system, 'SF Pro Display', BlinkMacSystemFont, sans-serif;
+            background-color: var(--bg-primary);
+            color: var(--text-primary);
+            overflow: hidden;
+            height: 100vh;
+            width: 100vw;
+        }
+
+        .app-container {
+            display: flex;
+            flex-direction: column;
+            height: 100vh;
+            width: 100%;
+        }
+
+        /* Header */
+        .header {
+            background: linear-gradient(135deg, rgba(230, 57, 70, 0.1) 0%, rgba(34, 201, 128, 0.05) 100%);
+            padding: max(env(safe-area-inset-top), 12px) 16px 16px;
+            border-bottom: 1px solid var(--border);
+            backdrop-filter: blur(20px);
+            z-index: 10;
+        }
+
+        .header-title {
+            font-size: 28px;
+            font-weight: 700;
+            letter-spacing: -0.5px;
+        }
+
+        .header-subtitle {
+            font-size: 14px;
+            color: var(--text-secondary);
+            margin-top: 4px;
+        }
+
+        .countdown {
+            font-size: 24px;
+            font-weight: 600;
+            color: var(--accent);
+            margin-top: 8px;
+            letter-spacing: -0.3px;
+        }
+
+        /* Phase Selector */
+        .phase-selector {
+            display: flex;
+            gap: 8px;
+            overflow-x: auto;
+            padding: 12px 16px;
+            border-bottom: 1px solid var(--border);
+            scroll-behavior: smooth;
+            -webkit-overflow-scrolling: touch;
+        }
+
+        .phase-selector::-webkit-scrollbar {
+            height: 4px;
+        }
+
+        .phase-selector::-webkit-scrollbar-track {
+            background: var(--bg-secondary);
+        }
+
+        .phase-selector::-webkit-scrollbar-thumb {
+            background: var(--accent);
+            border-radius: 2px;
+        }
+
+        .phase-pill {
+            padding: 8px 16px;
+            border-radius: 20px;
+            background: var(--bg-secondary);
+            border: 1px solid var(--border);
+            color: var(--text-secondary);
+            cursor: pointer;
+            white-space: nowrap;
+            font-size: 13px;
+            font-weight: 500;
+            transition: all 0.3s ease;
+            min-height: 36px;
+            display: flex;
+            align-items: center;
+            flex-shrink: 0;
+            touch-action: manipulation;
+        }
+
+        .phase-pill:active {
+            transform: scale(0.97);
+        }
+
+        .phase-pill.active {
+            background: var(--accent);
+            color: var(--bg-primary);
+            border-color: var(--accent);
+        }
+
+        /* Main Content */
+        .content {
+            flex: 1;
+            overflow-y: auto;
+            -webkit-overflow-scrolling: touch;
+            padding-bottom: var(--safe-area-inset-bottom);
+        }
+
+        .page {
+            display: none;
+            padding: 16px;
+            animation: fadeIn 0.3s ease;
+        }
+
+        .page.active {
+            display: block;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(8px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        /* Day Container */
+        .day-container {
+            margin-bottom: 20px;
+        }
+
+        .day-header {
+            font-size: 18px;
+            font-weight: 700;
+            margin-bottom: 12px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            padding: 8px 0;
+        }
+
+        .day-label {
+            flex: 1;
+        }
+
+        .day-type-badge {
+            font-size: 11px;
+            font-weight: 600;
+            padding: 4px 8px;
+            border-radius: 4px;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        /* Exercise Card */
+        .exercise-card {
+            background: var(--bg-secondary);
+            border: 1px solid var(--border);
+            border-radius: 12px;
+            margin-bottom: 12px;
+            overflow: hidden;
+            transition: all 0.3s ease;
+        }
+
+        .exercise-card.hyrox {
+            border-left: 4px solid var(--color-hyrox);
+        }
+
+        .exercise-card.recovery {
+            border-left: 4px solid var(--color-recovery);
+        }
+
+        .exercise-card.grip {
+            border-left: 4px solid var(--color-grip);
+        }
+
+        .exercise-card.cardio {
+            border-left: 4px solid var(--color-cardio);
+        }
+
+        .exercise-card.force {
+            border-left: 4px solid var(--color-force);
+        }
+
+        .exercise-card.cardio_z2 {
+            border-left: 4px solid var(--color-cardio-z2);
+        }
+
+        .exercise-header {
+            padding: 14px 16px;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            cursor: pointer;
+            touch-action: manipulation;
+            min-height: 44px;
+        }
+
+        .exercise-header:active {
+            background: rgba(255,255,255,0.03);
+        }
+
+        .exercise-icon {
+            font-size: 20px;
+            flex-shrink: 0;
+        }
+
+        .exercise-title {
+            flex: 1;
+            font-size: 15px;
+            font-weight: 600;
+        }
+
+        .exercise-toggle {
+            font-size: 18px;
+            color: var(--text-secondary);
+            transition: transform 0.3s ease;
+            flex-shrink: 0;
+        }
+
+        .exercise-card.expanded .exercise-toggle {
+            transform: rotate(180deg);
+        }
+
+        .exercise-content {
+            display: none;
+            padding: 0 16px 16px;
+            border-top: 1px solid var(--border);
+            font-size: 14px;
+            line-height: 1.6;
+        }
+
+        .exercise-card.expanded .exercise-content {
+            display: block;
+            animation: slideDown 0.3s ease;
+        }
+
+        @keyframes slideDown {
+            from { opacity: 0; max-height: 0; }
+            to { opacity: 1; max-height: 500px; }
+        }
+
+        .exercise-text {
+            color: var(--text-secondary);
+            margin-bottom: 12px;
+            white-space: pre-wrap;
+            word-break: break-word;
+        }
+
+        .exercise-note {
+            background: rgba(230, 57, 70, 0.1);
+            border-left: 3px solid var(--accent);
+            padding: 10px 12px;
+            border-radius: 4px;
+            font-size: 13px;
+            color: var(--text-secondary);
+            margin-top: 12px;
+        }
+
+        .video-links {
+            margin-top: 12px;
+        }
+
+        .video-link {
+            display: inline-block;
+            background: linear-gradient(135deg, var(--accent), rgba(230, 57, 70, 0.8));
+            color: white;
+            padding: 8px 12px;
+            border-radius: 6px;
+            text-decoration: none;
+            font-size: 12px;
+            font-weight: 600;
+            margin: 4px 4px 4px 0;
+            cursor: pointer;
+            border: none;
+            transition: all 0.2s ease;
+            touch-action: manipulation;
+            min-height: 32px;
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+        }
+
+        .video-link:active {
+            transform: scale(0.95);
+            opacity: 0.8;
+        }
+
+        /* Principles & Zones Pages */
+        .section {
+            margin-bottom: 24px;
+        }
+
+        .section-title {
+            font-size: 18px;
+            font-weight: 700;
+            margin-bottom: 12px;
+            color: var(--accent);
+        }
+
+        .section-content {
+            background: var(--bg-secondary);
+            border: 1px solid var(--border);
+            border-radius: 12px;
+            padding: 16px;
+            font-size: 14px;
+            line-height: 1.7;
+            color: var(--text-secondary);
+        }
+
+        .section-content strong {
+            color: var(--text-primary);
+        }
+
+        .zone-card {
+            background: linear-gradient(135deg, rgba(230, 57, 70, 0.1) 0%, rgba(34, 201, 128, 0.05) 100%);
+            border: 1px solid var(--border);
+            border-radius: 12px;
+            padding: 16px;
+            margin-bottom: 12px;
+        }
+
+        .zone-label {
+            font-weight: 700;
+            font-size: 16px;
+            margin-bottom: 8px;
+        }
+
+        .zone-desc {
+            font-size: 13px;
+            color: var(--text-secondary);
+            line-height: 1.6;
+        }
+
+        /* Bottom Navigation */
+        .bottom-nav {
+            display: flex;
+            justify-content: space-around;
+            align-items: center;
+            background: var(--bg-secondary);
+            border-top: 1px solid var(--border);
+            backdrop-filter: blur(20px);
+            padding-bottom: max(env(safe-area-inset-bottom), 8px);
+            padding-top: 8px;
+            gap: 8px;
+        }
+
+        .nav-item {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            gap: 4px;
+            padding: 8px;
+            color: var(--text-secondary);
+            cursor: pointer;
+            border-radius: 12px;
+            transition: all 0.3s ease;
+            touch-action: manipulation;
+            min-height: 44px;
+        }
+
+        .nav-item:active {
+            background: rgba(255,255,255,0.05);
+        }
+
+        .nav-item.active {
+            color: var(--accent);
+        }
+
+        .nav-icon {
+            font-size: 24px;
+        }
+
+        .nav-label {
+            font-size: 11px;
+            font-weight: 600;
+        }
+
+        /* Utilities */
+        .text-center {
+            text-align: center;
+        }
+
+        .text-secondary {
+            color: var(--text-secondary);
+        }
+
+        .mt-2 { margin-top: 8px; }
+        .mt-4 { margin-top: 16px; }
+
+        /* Responsive */
+        @media (max-width: 360px) {
+            .header-title {
+                font-size: 24px;
+            }
+
+            .phase-pill {
+                font-size: 12px;
+                padding: 6px 12px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="app-container">
+        <!-- Header -->
+        <div class="header">
+            <div class="header-title">Spartan Plan</div>
+            <div class="header-subtitle">Super 10km • 25 obstacles • 10 mai 2026</div>
+            <div class="countdown">J-<span id="daysLeft">0</span></div>
+        </div>
+
+        <!-- Phase Selector -->
+        <div class="phase-selector" id="phaseSelector"></div>
+
+        <!-- Main Content -->
+        <div class="content">
+            <!-- Plan Page -->
+            <div class="page active" id="planPage"></div>
+
+            <!-- Principes Page -->
+            <div class="page" id="principlesPage">
+                <div class="section">
+                    <div class="section-title">Périodisation</div>
+                    <div class="section-content">
+                        <strong>Adaptation → Construction → Peak → Taper</strong><br><br>
+                        Le taper (-50% volume, intensité maintenue) est validé scientifiquement pour les athlètes masters 50+ (Bompa & Haff).<br><br>
+                        <strong>Semaines 1-2:</strong> Adaptation — fréquence, technique, préparation articulaire<br>
+                        <strong>Semaines 3-4:</strong> Construction — volume, force, puissance<br>
+                        <strong>Semaine 5:</strong> Peak — intensité maximale, simulation course<br>
+                        <strong>Semaine 6:</strong> Taper — récupération active, consolidation
+                    </div>
+                </div>
+
+                <div class="section">
+                    <div class="section-title">Protection LCA</div>
+                    <div class="section-content">
+                        <strong>Genou gauche, LCA rompu non opéré</strong><br><br>
+                        Mouvements unilatéraux stables uniquement. Flexion max 60° sous charge. Zéro pivot.<br><br>
+                        ✓ Split squat (équilibre, stabilité)<br>
+                        ✓ Step-ups (progression progressive)<br>
+                        ✓ Single-leg RDL (posture stable)<br>
+                        ✗ Squat bilatéral lourd<br>
+                        ✗ Changements de direction rapides<br>
+                        ✗ Pivots et pivotements
+                    </div>
+                </div>
+
+                <div class="section">
+                    <div class="section-title">Protection L4-L5</div>
+                    <div class="section-content">
+                        <strong>Hernie discale avec début d'arthrose</strong><br><br>
+                        Big 3 McGill systématique chaque lundi. Farmer carry préféré au soulevé de terre. Gainage parfait avant toute charge axiale.<br><br>
+                        <strong>McGill Big 3:</strong><br>
+                        • Curl-Up (flexion contrôlée)<br>
+                        • Side Plank (stabilité latérale)<br>
+                        • Bird-Dog (extension réciproque)<br><br>
+                        Ces exercices protègent le disque L4-L5 en renforçant les stabilisateurs profonds sans flexion lombaire excessive.
+                    </div>
+                </div>
+
+                <div class="section">
+                    <div class="section-title">Grip & Obstacles</div>
+                    <div class="section-content">
+                        <strong>Le grip est la 1ère cause d'échec</strong> sur monkey bars, rope climb et hercules hoist.<br><br>
+                        Progression dead hang: position avant durée<br>
+                        • Position: Scapulae déprimées et rétractées (active hang)<br>
+                        • Durée: 6×10s → 5×30s selon la phase<br>
+                        • Towel hang: Charge progression pour préparation grip maximale<br>
+                        • Farmer carry: Grip endurance sous fatigue
+                    </div>
+                </div>
+
+                <div class="section">
+                    <div class="section-title">Polarisation Cardio</div>
+                    <div class="section-content">
+                        <strong>80% Z2 / 20% haute intensité (Seiler, 2010)</strong><br><br>
+                        Z2 (endurance de base) est où se construit le moteur aérobie. Les Hyrox couvrent le 20% intense.<br><br>
+                        Cette approche est particulièrement efficace pour les athlètes masters car elle:<br>
+                        • Préserve les articulations<br>
+                        • Construit une base aérobie solide<br>
+                        • Permet la récupération<br>
+                        • Augmente l'efficience métabolique
+                    </div>
+                </div>
+            </div>
+
+            <!-- Zones Page -->
+            <div class="page" id="zonesPage">
+                <div class="section">
+                    <div class="section-title">Zones de Fréquence Cardiaque</div>
+                </div>
+
+                <div class="zone-card">
+                    <div class="zone-label">Z1 - Récupération Active</div>
+                    <div class="zone-desc">
+                        <strong>RPE 1-2/10</strong><br>
+                        Marche rapide, vélo doux, yoga léger. La fréquence cardiaque est très basse. Cela aide à la récupération active sans stress supplémentaire. Utilisée en début de séance pour échauffement ou en jour de repos actif.
+                    </div>
+                </div>
+
+                <div class="zone-card">
+                    <div class="zone-label">Z2 - Endurance de Base</div>
+                    <div class="zone-desc">
+                        <strong>RPE 3-4/10</strong><br>
+                        Allure conversationnelle — tu peux parler sans essoufflement. <strong>C'est ici que se construit le moteur aérobie.</strong> Les runs du samedi et dimanche se font en Z2. Les efforts très longs (40-45 min) doivent rester en Z2.
+                    </div>
+                </div>
+
+                <div class="zone-card">
+                    <div class="zone-label">Z3 - Tempo</div>
+                    <div class="zone-desc">
+                        <strong>RPE 5-6/10</strong><br>
+                        Phrases courtes possibles. C'est la zone où débute l'inconfort. Utilisée pour les accélérations de 30-60 secondes ou pour les finales de séance. Sollicite le seuil lactique.
+                    </div>
+                </div>
+
+                <div class="zone-card">
+                    <div class="zone-label">Z4 - Seuil</div>
+                    <div class="zone-desc">
+                        <strong>RPE 7-8/10</strong><br>
+                        Quelques mots seulement — effort soutenu très intense. Durée maximale 5-10 minutes. Utilisée en phase 3 (Peak) pour simulations course. À éviter en phase 1-2.
+                    </div>
+                </div>
+
+                <div class="zone-card">
+                    <div class="zone-label">Z5 - VO2max</div>
+                    <div class="zone-desc">
+                        <strong>RPE 9-10/10</strong><br>
+                        Effort maximal — impossible de parler. Utilisée uniquement en phase 3 (Peak) pendant les burpees, step-ups intenses ou finales de Hyrox. Jamais en phase 1.
+                    </div>
+                </div>
+
+                <div class="section mt-4">
+                    <div class="section-title">À retenir</div>
+                    <div class="section-content">
+                        <strong>80% Z2, 20% haute intensité</strong> pour construire l'endurance tout en protégeant les articulations. Les Hyrox (mardi et dimanche) couvrent automatiquement la haute intensité. Les runs du samedi doivent rester strictement en Z2 sauf si des accélérations sont programmées.
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Bottom Navigation -->
+        <div class="bottom-nav">
+            <div class="nav-item active" onclick="showPage('plan')">
+                <div class="nav-icon">📋</div>
+                <div class="nav-label">Plan</div>
+            </div>
+            <div class="nav-item" onclick="showPage('principles')">
+                <div class="nav-icon">🎯</div>
+                <div class="nav-label">Principes</div>
+            </div>
+            <div class="nav-item" onclick="showPage('zones')">
+                <div class="nav-icon">❤️</div>
+                <div class="nav-label">Zones</div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // ===== Training Data =====
+        const trainingData = {
+            phases: [
+                {
+                    name: 'Phase 1: Adaptation',
+                    short: 'Phase 1',
+                    weeks: 'Semaines 1-2',
+                    dates: '30 mars - 12 avril',
+                    startDate: new Date(2026, 2, 30),
+                    endDate: new Date(2026, 3, 12)
+                },
+                {
+                    name: 'Phase 2: Construction',
+                    short: 'Phase 2',
+                    weeks: 'Semaines 3-4',
+                    dates: '13 - 26 avril',
+                    startDate: new Date(2026, 3, 13),
+                    endDate: new Date(2026, 3, 26)
+                },
+                {
+                    name: 'Phase 3: Peak',
+                    short: 'Phase 3',
+                    weeks: 'Semaine 5',
+                    dates: '27 avril - 3 mai',
+                    startDate: new Date(2026, 3, 27),
+                    endDate: new Date(2026, 4, 3)
+                },
+                {
+                    name: 'Phase 4: Taper',
+                    short: 'Phase 4',
+                    weeks: 'Semaine 6',
+                    dates: '4 - 9 mai',
+                    startDate: new Date(2026, 4, 4),
+                    endDate: new Date(2026, 4, 9)
+                }
+            ],
+            days: {
+                'LUNDI': {
+                    full: 'LUNDI - Core McGill + Récupération',
+                    type: 'recovery',
+                    icon: '🛡️',
+                    color: '#22c980',
+                    phases: {
+                        1: {
+                            exercises: [
+                                { name: 'McGill Curl-Up', desc: '3×8 (10s hold)' },
+                                { name: 'Side Plank', desc: '3×15s/côté' },
+                                { name: 'Bird-Dog', desc: '3×6/côté' },
+                                { name: 'Cat-Cow', desc: '2×10' }
+                            ],
+                            note: 'Z1 optionnel 15-20min vélo/marche en début de séance',
+                            videos: {
+                                'McGill Curl-Up': 'https://www.youtube.com/results?search_query=mcgill+curl+up+proper+form',
+                                'Side Plank': 'https://www.youtube.com/results?search_query=mcgill+side+plank+technique',
+                                'Bird-Dog': 'https://www.youtube.com/results?search_query=mcgill+bird+dog+exercise',
+                                'Cat-Cow': 'https://www.youtube.com/results?search_query=cat+cow+stretch+spine+mobility',
+                                'Pallof Press': 'https://www.youtube.com/results?search_query=pallof+press+anti+rotation+core'
+                            }
+                        },
+                        2: {
+                            exercises: [
+                                { name: 'McGill Curl-Up', desc: '3×10 (10s hold)' },
+                                { name: 'Side Plank', desc: '3×25s/côté' },
+                                { name: 'Bird-Dog', desc: '3×8/côté' },
+                                { name: 'Pallof Press', desc: '3×8/côté' },
+                                { name: 'Cat-Cow', desc: '2×10' }
+                            ],
+                            note: '',
+                            videos: {
+                                'McGill Curl-Up': 'https://www.youtube.com/results?search_query=mcgill+curl+up+proper+form',
+                                'Side Plank': 'https://www.youtube.com/results?search_query=mcgill+side+plank+technique',
+                                'Bird-Dog': 'https://www.youtube.com/results?search_query=mcgill+bird+dog+exercise',
+                                'Cat-Cow': 'https://www.youtube.com/results?search_query=cat+cow+stretch+spine+mobility',
+                                'Pallof Press': 'https://www.youtube.com/results?search_query=pallof+press+anti+rotation+core'
+                            }
+                        },
+                        3: {
+                            exercises: [
+                                { name: 'McGill Curl-Up', desc: '3×10 (12s hold)' },
+                                { name: 'Side Plank', desc: '3×30s/côté' },
+                                { name: 'Bird-Dog', desc: '3×10/côté' },
+                                { name: 'Pallof Press', desc: '3×10/côté' }
+                            ],
+                            note: '',
+                            videos: {
+                                'McGill Curl-Up': 'https://www.youtube.com/results?search_query=mcgill+curl+up+proper+form',
+                                'Side Plank': 'https://www.youtube.com/results?search_query=mcgill+side+plank+technique',
+                                'Bird-Dog': 'https://www.youtube.com/results?search_query=mcgill+bird+dog+exercise',
+                                'Pallof Press': 'https://www.youtube.com/results?search_query=pallof+press+anti+rotation+core'
+                            }
+                        },
+                        4: {
+                            exercises: [
+                                { name: 'McGill Curl-Up', desc: '2×8' },
+                                { name: 'Side Plank', desc: '2×20s/côté' },
+                                { name: 'Bird-Dog', desc: '2×6/côté' }
+                            ],
+                            note: 'Volume -50%, intensité maintenue',
+                            videos: {
+                                'McGill Curl-Up': 'https://www.youtube.com/results?search_query=mcgill+curl+up+proper+form',
+                                'Side Plank': 'https://www.youtube.com/results?search_query=mcgill+side+plank+technique',
+                                'Bird-Dog': 'https://www.youtube.com/results?search_query=mcgill+bird+dog+exercise'
+                            }
+                        }
+                    }
+                },
+                'MARDI': {
+                    full: 'MARDI - Hyrox',
+                    type: 'hyrox',
+                    icon: '⚡',
+                    color: '#f0a500',
+                    phases: {
+                        1: {
+                            text: 'Séance Hyrox externe — 1h (mardi soir)',
+                            note: 'Séance encadrée en salle. Maintenir l\'intensité habituelle.'
+                        },
+                        2: {
+                            text: 'Séance Hyrox externe — 1h (mardi soir)',
+                            note: 'Séance encadrée en salle. Maintenir l\'intensité habituelle.'
+                        },
+                        3: {
+                            text: 'Séance Hyrox externe — 1h (mardi soir)',
+                            note: 'Séance encadrée en salle. Maintenir l\'intensité habituelle.'
+                        },
+                        4: {
+                            text: 'Séance Hyrox externe — 1h (mardi soir)',
+                            note: 'Séance encadrée en salle. Maintenir l\'intensité habituelle.'
+                        }
+                    }
+                },
+                'MERCREDI': {
+                    full: 'MERCREDI - Grip + Traction',
+                    type: 'grip',
+                    icon: '🏋️',
+                    color: '#e63946',
+                    phases: {
+                        1: {
+                            exercises: [
+                                { name: 'Dead Hang actif', desc: '6×10s (repos 90s, focus position scapulaire)' },
+                                { name: 'Pull-ups assistés ou excentriques', desc: '3×5' },
+                                { name: 'Towel Hang', desc: '3×10s' },
+                                { name: 'Farmer Carry', desc: '3×20m (modéré)' },
+                                { name: 'Rope Pull câble', desc: '3×8' },
+                                { name: 'Face Pulls', desc: '3×12' }
+                            ],
+                            note: '',
+                            videos: {
+                                'Dead Hang actif': 'https://www.youtube.com/results?search_query=active+dead+hang+scapular+engagement',
+                                'Pull-ups': 'https://www.youtube.com/results?search_query=pull+up+proper+form+beginner',
+                                'Towel Hang': 'https://www.youtube.com/results?search_query=towel+hang+grip+training',
+                                'Farmer Carry': 'https://www.youtube.com/results?search_query=farmer+carry+proper+form',
+                                'Rope Pull': 'https://www.youtube.com/results?search_query=cable+rope+pull+hand+over+hand',
+                                'Face Pulls': 'https://www.youtube.com/results?search_query=face+pulls+rear+delt+form'
+                            }
+                        },
+                        2: {
+                            exercises: [
+                                { name: 'Dead Hang actif', desc: '4×20-25s' },
+                                { name: 'Pull-ups', desc: '3×6-8' },
+                                { name: 'Towel Hang', desc: '3×15s' },
+                                { name: 'Farmer Carry', desc: '3×30m (charge++)' },
+                                { name: 'Rope Pull câble', desc: '3×10' },
+                                { name: 'Face Pulls', desc: '3×15' }
+                            ],
+                            note: '',
+                            videos: {
+                                'Dead Hang actif': 'https://www.youtube.com/results?search_query=active+dead+hang+scapular+engagement',
+                                'Pull-ups': 'https://www.youtube.com/results?search_query=pull+up+proper+form+beginner',
+                                'Towel Hang': 'https://www.youtube.com/results?search_query=towel+hang+grip+training',
+                                'Farmer Carry': 'https://www.youtube.com/results?search_query=farmer+carry+proper+form',
+                                'Rope Pull': 'https://www.youtube.com/results?search_query=cable+rope+pull+hand+over+hand',
+                                'Face Pulls': 'https://www.youtube.com/results?search_query=face+pulls+rear+delt+form'
+                            }
+                        },
+                        3: {
+                            exercises: [
+                                { name: 'Dead Hang actif', desc: '5×30s' },
+                                { name: 'Pull-ups', desc: '4×max' },
+                                { name: 'Towel Hang', desc: '3×20s' },
+                                { name: 'Farmer Carry', desc: '4×30m (lourd)' },
+                                { name: 'Rope Pull câble', desc: '4×10' },
+                                { name: 'Face Pulls', desc: '3×15' }
+                            ],
+                            note: '',
+                            videos: {
+                                'Dead Hang actif': 'https://www.youtube.com/results?search_query=active+dead+hang+scapular+engagement',
+                                'Pull-ups': 'https://www.youtube.com/results?search_query=pull+up+proper+form+beginner',
+                                'Towel Hang': 'https://www.youtube.com/results?search_query=towel+hang+grip+training',
+                                'Farmer Carry': 'https://www.youtube.com/results?search_query=farmer+carry+proper+form',
+                                'Rope Pull': 'https://www.youtube.com/results?search_query=cable+rope+pull+hand+over+hand',
+                                'Face Pulls': 'https://www.youtube.com/results?search_query=face+pulls+rear+delt+form'
+                            }
+                        },
+                        4: {
+                            exercises: [
+                                { name: 'Dead Hang actif', desc: '3×20s' },
+                                { name: 'Pull-ups', desc: '2×6' },
+                                { name: 'Towel Hang', desc: '2×10s' },
+                                { name: 'Farmer Carry', desc: '2×20m (volume -50%)' }
+                            ],
+                            note: '',
+                            videos: {
+                                'Dead Hang actif': 'https://www.youtube.com/results?search_query=active+dead+hang+scapular+engagement',
+                                'Pull-ups': 'https://www.youtube.com/results?search_query=pull+up+proper+form+beginner',
+                                'Towel Hang': 'https://www.youtube.com/results?search_query=towel+hang+grip+training',
+                                'Farmer Carry': 'https://www.youtube.com/results?search_query=farmer+carry+proper+form'
+                            }
+                        }
+                    }
+                },
+                'JEUDI': {
+                    full: 'JEUDI - Cardio Spécifique Spartan',
+                    type: 'cardio',
+                    icon: '🏃',
+                    color: '#4a9eff',
+                    phases: {
+                        1: {
+                            exercises: [
+                                { name: 'Tapis incliné 4-6%', desc: '20min Z2' },
+                                { name: 'Burpees', desc: '3×5 (technique)' },
+                                { name: 'Step-ups', desc: '3×10/jambe' },
+                                { name: 'Farmer Carry', desc: '2×20m sous fatigue' }
+                            ],
+                            note: '',
+                            videos: {
+                                'Burpees': 'https://www.youtube.com/results?search_query=spartan+race+burpee+penalty+technique',
+                                'Step-ups': 'https://www.youtube.com/results?search_query=step+ups+knee+friendly+form',
+                                'Farmer Carry': 'https://www.youtube.com/results?search_query=farmer+carry+proper+form'
+                            }
+                        },
+                        2: {
+                            exercises: [
+                                { name: 'Tapis incliné 6%', desc: '25min Z2-Z3' },
+                                { name: 'Burpees', desc: '3×8' },
+                                { name: 'Step-ups', desc: '3×12/jambe (charge légère)' },
+                                { name: 'Farmer Carry', desc: '3×25m sous fatigue' }
+                            ],
+                            note: '',
+                            videos: {
+                                'Burpees': 'https://www.youtube.com/results?search_query=spartan+race+burpee+penalty+technique',
+                                'Step-ups': 'https://www.youtube.com/results?search_query=step+ups+knee+friendly+form',
+                                'Farmer Carry': 'https://www.youtube.com/results?search_query=farmer+carry+proper+form'
+                            }
+                        },
+                        3: {
+                            exercises: [
+                                { name: 'Tapis incliné 6-8%', desc: '30min avec 3× accélérations Z3-Z4' },
+                                { name: 'Burpees', desc: '4×10' },
+                                { name: 'Step-ups', desc: '4×12/jambe' },
+                                { name: 'Farmer Carry', desc: '3×30m sous fatigue' }
+                            ],
+                            note: '',
+                            videos: {
+                                'Burpees': 'https://www.youtube.com/results?search_query=spartan+race+burpee+penalty+technique',
+                                'Step-ups': 'https://www.youtube.com/results?search_query=step+ups+knee+friendly+form',
+                                'Farmer Carry': 'https://www.youtube.com/results?search_query=farmer+carry+proper+form'
+                            }
+                        },
+                        4: {
+                            exercises: [
+                                { name: 'Tapis incliné 4%', desc: '15min Z2 facile' },
+                                { name: 'Burpees', desc: '2×5' },
+                                { name: 'Step-ups', desc: '2×8/jambe (volume -50%)' }
+                            ],
+                            note: '',
+                            videos: {
+                                'Burpees': 'https://www.youtube.com/results?search_query=spartan+race+burpee+penalty+technique',
+                                'Step-ups': 'https://www.youtube.com/results?search_query=step+ups+knee+friendly+form'
+                            }
+                        }
+                    }
+                },
+                'VENDREDI': {
+                    full: 'VENDREDI - Force Obstacles',
+                    type: 'force',
+                    icon: '💪',
+                    color: '#9b59b6',
+                    phases: {
+                        1: {
+                            exercises: [
+                                { name: 'Split Squat', desc: '3×10/jambe' },
+                                { name: 'Band-assisted Row', desc: '3×12' },
+                                { name: 'Dumbbell Overhead Press', desc: '3×10' },
+                                { name: 'Wall Ball', desc: '3×10' },
+                                { name: 'Hercules Hoist simulation câble', desc: '3×8' }
+                            ],
+                            note: '',
+                            videos: {
+                                'Split Squat': 'https://www.youtube.com/results?search_query=split+squat+knee+safe+form',
+                                'Inverted Row': 'https://www.youtube.com/results?search_query=inverted+row+bodyweight',
+                                'Overhead Press': 'https://www.youtube.com/results?search_query=dumbbell+overhead+press+standing',
+                                'Wall Ball': 'https://www.youtube.com/results?search_query=wall+ball+crossfit+technique',
+                                'Hercules Hoist': 'https://www.youtube.com/results?search_query=spartan+race+hercules+hoist+training'
+                            }
+                        },
+                        2: {
+                            exercises: [
+                                { name: 'Split Squat', desc: '3×12/jambe (charge légère)' },
+                                { name: 'Inverted Row', desc: '3×10' },
+                                { name: 'Dumbbell Overhead Press', desc: '3×12' },
+                                { name: 'Wall Ball', desc: '3×12' },
+                                { name: 'Hercules Hoist simulation', desc: '3×10' },
+                                { name: 'Face Pulls', desc: '3×12' }
+                            ],
+                            note: '',
+                            videos: {
+                                'Split Squat': 'https://www.youtube.com/results?search_query=split+squat+knee+safe+form',
+                                'Inverted Row': 'https://www.youtube.com/results?search_query=inverted+row+bodyweight',
+                                'Overhead Press': 'https://www.youtube.com/results?search_query=dumbbell+overhead+press+standing',
+                                'Wall Ball': 'https://www.youtube.com/results?search_query=wall+ball+crossfit+technique',
+                                'Hercules Hoist': 'https://www.youtube.com/results?search_query=spartan+race+hercules+hoist+training'
+                            }
+                        },
+                        3: {
+                            exercises: [
+                                { name: 'Split Squat', desc: '4×12/jambe (charge)' },
+                                { name: 'Inverted Row', desc: '4×10' },
+                                { name: 'Dumbbell Push Press', desc: '3×10' },
+                                { name: 'Wall Ball', desc: '4×12' },
+                                { name: 'Hercules Hoist', desc: '4×10' },
+                                { name: 'Circuit final', desc: '3 rounds: burpees ×5 + dead hang à l\'échec + farmer carry 20m' }
+                            ],
+                            note: '',
+                            videos: {
+                                'Split Squat': 'https://www.youtube.com/results?search_query=split+squat+knee+safe+form',
+                                'Inverted Row': 'https://www.youtube.com/results?search_query=inverted+row+bodyweight',
+                                'Overhead Press': 'https://www.youtube.com/results?search_query=dumbbell+overhead+press+standing',
+                                'Wall Ball': 'https://www.youtube.com/results?search_query=wall+ball+crossfit+technique',
+                                'Hercules Hoist': 'https://www.youtube.com/results?search_query=spartan+race+hercules+hoist+training'
+                            }
+                        },
+                        4: {
+                            exercises: [
+                                { name: 'Split Squat', desc: '2×8/jambe' },
+                                { name: 'Row', desc: '2×8' },
+                                { name: 'Press', desc: '2×8' },
+                                { name: 'Wall Ball', desc: '2×8 (volume -50%)' }
+                            ],
+                            note: '',
+                            videos: {
+                                'Split Squat': 'https://www.youtube.com/results?search_query=split+squat+knee+safe+form',
+                                'Wall Ball': 'https://www.youtube.com/results?search_query=wall+ball+crossfit+technique'
+                            }
+                        }
+                    }
+                },
+                'SAMEDI': {
+                    full: 'SAMEDI - Cardio Z2',
+                    type: 'cardio_z2',
+                    icon: '🏃‍♂️',
+                    color: '#1abc9c',
+                    phases: {
+                        1: {
+                            text: '30min Z2 strict — trail, route ou tapis incliné 4-6%',
+                            note: 'Allure conversationnelle. Ne pas dépasser Z2.'
+                        },
+                        2: {
+                            text: '40min Z2 + accélérations Z3 optionnelles en fin de sortie (2×30s)',
+                            note: ''
+                        },
+                        3: {
+                            text: '45min Z2 + 4 accélérations Z3-Z4 (simule redémarrages post-obstacle)',
+                            note: ''
+                        },
+                        4: {
+                            text: '20-25min Z1-Z2 très facile + quelques foulées vives (4×10s)',
+                            note: ''
+                        }
+                    }
+                },
+                'DIMANCHE': {
+                    full: 'DIMANCHE - Hyrox',
+                    type: 'hyrox',
+                    icon: '⚡',
+                    color: '#f0a500',
+                    phases: {
+                        1: {
+                            text: 'Séance Hyrox externe — 1h (dimanche matin)',
+                            note: ''
+                        },
+                        2: {
+                            text: 'Séance Hyrox externe — 1h (dimanche matin)',
+                            note: ''
+                        },
+                        3: {
+                            text: 'Séance Hyrox externe — 1h (dimanche matin)',
+                            note: ''
+                        },
+                        4: {
+                            text: 'Séance Hyrox externe — 1h (dimanche matin)',
+                            note: ''
+                        }
+                    }
+                }
+            }
+        };
+
+        // ===== State =====
+        let currentPhase = 1;
+        let currentPage = 'plan';
+
+        // ===== Utility Functions =====
+        function getCurrentPhase() {
+            const today = new Date();
+            const phases = trainingData.phases;
+
+            for (let i = 0; i < phases.length; i++) {
+                if (today >= phases[i].startDate && today <= phases[i].endDate) {
+                    return i + 1;
+                }
+            }
+            return 1;
+        }
+
+        function getDaysUntilRace() {
+            const raceDate = new Date(2026, 4, 10);
+            const today = new Date();
+            const diff = raceDate - today;
+            return Math.ceil(diff / (1000 * 60 * 60 * 24));
+        }
+
+        function getTodayDayIndex() {
+            return new Date().getDay();
+        }
+
+        const dayOrder = ['DIMANCHE', 'LUNDI', 'MARDI', 'MERCREDI', 'JEUDI', 'VENDREDI', 'SAMEDI'];
+
+        function getDayNameFR(index) {
+            return dayOrder[index];
+        }
+
+        // ===== Page Navigation =====
+        function showPage(pageName) {
+            currentPage = pageName;
+
+            document.querySelectorAll('.page').forEach(el => el.classList.remove('active'));
+            document.querySelectorAll('.nav-item').forEach(el => el.classList.remove('active'));
+
+            if (pageName === 'plan') {
+                document.getElementById('planPage').classList.add('active');
+                document.querySelector('.nav-item:nth-child(1)').classList.add('active');
+            } else if (pageName === 'principles') {
+                document.getElementById('principlesPage').classList.add('active');
+                document.querySelector('.nav-item:nth-child(2)').classList.add('active');
+            } else if (pageName === 'zones') {
+                document.getElementById('zonesPage').classList.add('active');
+                document.querySelector('.nav-item:nth-child(3)').classList.add('active');
+            }
+        }
+
+        // ===== Exercise Card Toggle =====
+        function toggleEx(element) {
+            element.closest('.exercise-card').classList.toggle('expanded');
+        }
+
+        // ===== Render Phase Selector =====
+        function renderPhaseSelector() {
+            const container = document.getElementById('phaseSelector');
+            const current = getCurrentPhase();
+
+            container.innerHTML = trainingData.phases.map((phase, idx) => {
+                const phaseNum = idx + 1;
+                const isActive = phaseNum === current;
+                return `
+                    <div class="phase-pill ${isActive ? 'active' : ''}" onclick="selectPhase(${phaseNum})">
+                        ${phase.short}
+                    </div>
+                `;
+            }).join('');
+
+            currentPhase = current;
+        }
+
+        function selectPhase(phaseNum) {
+            currentPhase = phaseNum;
+            renderTrainingPlan();
+
+            // Update pills
+            document.querySelectorAll('.phase-pill').forEach((el, idx) => {
+                el.classList.toggle('active', idx + 1 === phaseNum);
+            });
+        }
+
+        // ===== Render Training Plan =====
+        function renderTrainingPlan() {
+            const container = document.getElementById('planPage');
+            const todayIndex = getTodayDayIndex();
+
+            let html = '';
+
+            dayOrder.forEach((dayName, index) => {
+                const dayData = trainingData.days[dayName];
+                const isToday = index === todayIndex;
+                const typeClass = dayData.type;
+
+                html += `<div class="day-container ${isToday ? 'today' : ''}">`;
+                html += `<div class="day-header">
+                    <div class="day-label">${dayData.icon} ${dayData.full}</div>
+                    <div class="day-type-badge" style="background: ${dayData.color}40; color: ${dayData.color};">
+                        ${dayData.type.toUpperCase()}
+                    </div>
+                </div>`;
+
+                // Get phase data
+                const phaseContent = dayData.phases[currentPhase];
+
+                if (phaseContent.exercises) {
+                    // Multiple exercises format
+                    phaseContent.exercises.forEach((ex, idx) => {
+                        const videoLinks = phaseContent.videos[ex.name] || {};
+                        const videoHtml = Object.entries(videoLinks).map(([name, url]) => {
+                            return `<a href="${url}" target="_blank" class="video-link">📹 ${name}</a>`;
+                        }).join('');
+
+                        html += `
+                            <div class="exercise-card ${typeClass}">
+                                <div class="exercise-header" onclick="toggleEx(this)">
+                                    <span class="exercise-icon">💪</span>
+                                    <span class="exercise-title">${ex.name}</span>
+                                    <span class="exercise-toggle">▼</span>
+                                </div>
+                                <div class="exercise-content">
+                                    <div class="exercise-text">${ex.desc}</div>
+                                    ${videoHtml ? `<div class="video-links">${videoHtml}</div>` : ''}
+                                </div>
+                            </div>
+                        `;
+                    });
+
+                    if (phaseContent.note) {
+                        html += `<div class="exercise-note">📌 ${phaseContent.note}</div>`;
+                    }
+                } else if (phaseContent.text) {
+                    // Simple text format
+                    html += `
+                        <div class="exercise-card ${typeClass}">
+                            <div class="exercise-header">
+                                <span class="exercise-icon">🎯</span>
+                                <span class="exercise-title">${phaseContent.text}</span>
+                            </div>
+                        </div>
+                    `;
+
+                    if (phaseContent.note) {
+                        html += `<div class="exercise-note">📌 ${phaseContent.note}</div>`;
+                    }
+                }
+
+                html += `</div>`;
+            });
+
+            container.innerHTML = html;
+        }
+
+        // ===== Update Countdown =====
+        function updateCountdown() {
+            const daysLeft = getDaysUntilRace();
+            document.getElementById('daysLeft').textContent = Math.max(0, daysLeft);
+        }
+
+        // ===== Initialize App =====
+        function initApp() {
+            // Register service worker
+            if ('serviceWorker' in navigator) {
+                navigator.serviceWorker.register('data:application/javascript,' + encodeURIComponent(`
+                    const CACHE_NAME = 'spartan-plan-v1';
+                    const urlsToCache = ['/'];
+
+                    self.addEventListener('install', event => {
+                        event.waitUntil(caches.open(CACHE_NAME).then(cache => cache.addAll(urlsToCache)));
+                        self.skipWaiting();
+                    });
+
+                    self.addEventListener('activate', event => {
+                        event.waitUntil(caches.keys().then(names => Promise.all(names.filter(name => name !== CACHE_NAME).map(name => caches.delete(name)))));
+                        self.clients.claim();
+                    });
+
+                    self.addEventListener('fetch', event => {
+                        if (event.request.method !== 'GET') return;
+                        event.respondWith(
+                            caches.match(event.request).then(response => response || fetch(event.request).then(response => {
+                                if (!response || response.status !== 200 || response.type === 'error') return response;
+                                const responseClone = response.clone();
+                                caches.open(CACHE_NAME).then(cache => cache.put(event.request, responseClone));
+                                return response;
+                            })).catch(() => new Response('Offline'))
+                        );
+                    });
+                `)).catch(() => {});
+            }
+
+            // Render initial state
+            renderPhaseSelector();
+            renderTrainingPlan();
+            updateCountdown();
+
+            // Update countdown every minute
+            setInterval(updateCountdown, 60000);
+        }
+
+        // Start app when DOM is ready
+        if (document.readyState === 'loading') {
+            document.addEventListener('DOMContentLoaded', initApp);
+        } else {
+            initApp();
+        }
+    </script>
+</body>
+</html>

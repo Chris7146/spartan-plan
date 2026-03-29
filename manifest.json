@@ -1,0 +1,25 @@
+{
+  "name": "Spartan Plan",
+  "short_name": "Spartan",
+  "description": "Plan d'entraînement Spartan Race Super 10km - 25 obstacles",
+  "start_url": "/spartan-plan/",
+  "scope": "/spartan-plan/",
+  "display": "standalone",
+  "background_color": "#0e1412",
+  "theme_color": "#e63946",
+  "orientation": "portrait-primary",
+  "icons": [
+    {
+      "src": "data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 192 192'%3E%3Crect fill='%23e63946' width='192' height='192' rx='32'/%3E%3Ctext x='96' y='128' font-size='96' font-weight='bold' fill='%23e8ede9' text-anchor='middle'%3E%E2%9A%94%3C/text%3E%3C/svg%3E",
+      "sizes": "192x192",
+      "type": "image/svg+xml",
+      "purpose": "any"
+    },
+    {
+      "src": "data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 512 512'%3E%3Crect fill='%23e63946' width='512' height='512' rx='64'/%3E%3Ctext x='256' y='340' font-size='256' font-weight='bold' fill='%23e8ede9' text-anchor='middle'%3E%E2%9A%94%3C/text%3E%3C/svg%3E",
+      "sizes": "512x512",
+      "type": "image/svg+xml",
+      "purpose": "any maskable"
+    }
+  ]
+}
