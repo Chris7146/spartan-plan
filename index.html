@@ -1104,10 +1104,8 @@
                 if (phaseContent.exercises) {
                     // Multiple exercises format
                     phaseContent.exercises.forEach((ex, idx) => {
-                        const videoUrl = (phaseContent.videos && phaseContent.videos[ex.name]) ? phaseContent.videos[ex.name] : null;
-                        const videoHtml = Object.entries(videoLinks).map(([name, url]) => {
-                            return `<a href="${url}" target="_blank" class="video-link">📹 ${name}</a>`;
-                        }).join('');
+                        const videoUrl= (phaseContent.videos && phaseContent.videos[ex.name]) ? phaseContent.videos[ex.name] : null;
+                        const videoHtml = videoUrl ? `<a href="${videoUrl}" target="_blank" class="video-link">📹 Voir l'exercice</a>` : '';
 
                         html += `
                             <div class="exercise-card ${typeClass}">
