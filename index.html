@@ -1117,10 +1117,11 @@
         }
 
         function getTodayDayIndex() {
-            return new Date().getDay();
+            // Map JS getDay() (Sun=0..Sat=6) to Mon-first order (Mon=0..Sun=6)
+            return (new Date().getDay() + 6) % 7;
         }
 
-        const dayOrder = ['DIMANCHE', 'LUNDI', 'MARDI', 'MERCREDI', 'JEUDI', 'VENDREDI', 'SAMEDI'];
+        const dayOrder = ['LUNDI', 'MARDI', 'MERCREDI', 'JEUDI', 'VENDREDI', 'SAMEDI', 'DIMANCHE'];
 
         function getDayNameFR(index) {
             return dayOrder[index];
