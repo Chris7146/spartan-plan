@@ -558,7 +558,7 @@
         <!-- Header -->
         <div class="header">
             <div class="header-title">Spartan Plan</div>
-            <div class="header-subtitle">Super 10km • 25 obstacles • 10 mai 2026</div>
+            <div class="header-subtitle">Sprint 5km • Morzine • 4 juillet 2026</div>
             <div class="countdown">J-<span id="daysLeft">0</span></div>
         </div>
 
@@ -575,12 +575,13 @@
                 <div class="section">
                     <div class="section-title">Périodisation</div>
                     <div class="section-content">
-                        <strong>Adaptation → Construction → Peak → Taper</strong><br><br>
-                        Le taper (-50% volume, intensité maintenue) est validé scientifiquement pour les athlètes masters 50+ (Bompa & Haff).<br><br>
-                        <strong>Semaines 1-2:</strong> Adaptation — fréquence, technique, préparation articulaire<br>
-                        <strong>Semaines 3-4:</strong> Construction — volume, force, puissance<br>
-                        <strong>Semaine 5:</strong> Peak — intensité maximale, simulation course<br>
-                        <strong>Semaine 6:</strong> Taper — récupération active, consolidation
+                        <strong>Récupération → Reconstruction → Construction → Pic → Taper</strong><br><br>
+                        Cycle 8 semaines vers la Sprint Morzine (4 juillet 2026), puis Jablines (Super+Sprint, 19 sept) et Estérel (Beast, 3 oct).<br><br>
+                        <strong>Semaine 1 (11-17 mai):</strong> Récupération active post-Carcassonne<br>
+                        <strong>Semaines 2-3 (18-31 mai):</strong> Reconstruction — base aérobie, force progressive, eccentric quad genou<br>
+                        <strong>Semaines 4-5 (1-14 juin):</strong> Construction spécifique — volume, Atlas/Rope/Multi-Rig, trail montagne<br>
+                        <strong>Semaines 6-7 (15-28 juin):</strong> Pic Sprint — intensité maximale, simulation course<br>
+                        <strong>Semaine 8 (29 juin-5 juillet):</strong> Taper — récupération active, consolidation
                     </div>
                 </div>
 
@@ -633,6 +634,21 @@
                         • Construit une base aérobie solide<br>
                         • Permet la récupération<br>
                         • Augmente l'efficience métabolique
+                    </div>
+                </div>
+
+                <div class="section">
+                    <div class="section-title">Composition corporelle</div>
+                    <div class="section-content">
+                        <strong>Objectif : alléger sans perdre de muscle</strong><br><br>
+                        <strong>Déficit calorique modéré :</strong> -250 à -400 kcal/j max. Vise ~0,3-0,5 kg/semaine, pas plus.<br><br>
+                        <strong>Protéines élevées :</strong> 1,8-2,0 g/kg/jour. Sur ~75 kg ≈ 135-150 g/j.<br>
+                        <strong>Glucides timés :</strong> 3-4 g/kg/j, augmentés autour des séances dures (Hyrox, force).<br>
+                        <strong>Lipides :</strong> 0,8-1 g/kg/j, sources qualité (huile olive, avocat, poissons gras).<br><br>
+                        <strong>Maintien charges en force :</strong> jamais baisser le poids, ajuster la RIR si besoin.<br>
+                        <strong>Cardio Z2 prioritaire :</strong> mobilise les graisses sans creuser le glycogène.<br>
+                        <strong>Sommeil 7,5-8h non négociable.</strong> Sous 7h, anti-musculaire.<br>
+                        <strong>Alcool zéro</strong> en phase active (bloque la synthèse protéique 24h).
                     </div>
                 </div>
             </div>
@@ -714,36 +730,44 @@
         const trainingData = {
             phases: [
                 {
-                    name: 'Phase 1: Adaptation',
+                    name: 'Phase 1: Récupération',
                     short: 'Phase 1',
-                    weeks: 'Semaines 1-2',
-                    dates: '30 mars - 12 avril',
-                    startDate: new Date(2026, 2, 30),
-                    endDate: new Date(2026, 3, 12)
+                    weeks: 'Semaine 1',
+                    dates: '11 - 17 mai',
+                    startDate: new Date(2026, 4, 11),
+                    endDate: new Date(2026, 4, 17)
                 },
                 {
-                    name: 'Phase 2: Construction',
+                    name: 'Phase 2: Reconstruction',
                     short: 'Phase 2',
-                    weeks: 'Semaines 3-4',
-                    dates: '13 - 26 avril',
-                    startDate: new Date(2026, 3, 13),
-                    endDate: new Date(2026, 3, 26)
+                    weeks: 'Semaines 2-3',
+                    dates: '18 - 31 mai',
+                    startDate: new Date(2026, 4, 18),
+                    endDate: new Date(2026, 4, 31)
                 },
                 {
-                    name: 'Phase 3: Peak',
+                    name: 'Phase 3: Construction spécifique',
                     short: 'Phase 3',
-                    weeks: 'Semaine 5',
-                    dates: '27 avril - 3 mai',
-                    startDate: new Date(2026, 3, 27),
-                    endDate: new Date(2026, 4, 3)
+                    weeks: 'Semaines 4-5',
+                    dates: '1 - 14 juin',
+                    startDate: new Date(2026, 5, 1),
+                    endDate: new Date(2026, 5, 14)
                 },
                 {
-                    name: 'Phase 4: Taper → 🏁 Course',
+                    name: 'Phase 4: Pic Sprint',
                     short: 'Phase 4',
-                    weeks: 'Semaine 6',
-                    dates: '4 - 10 mai (course Carcassonne dim 10)',
-                    startDate: new Date(2026, 4, 4),
-                    endDate: new Date(2026, 4, 10)
+                    weeks: 'Semaines 6-7',
+                    dates: '15 - 28 juin',
+                    startDate: new Date(2026, 5, 15),
+                    endDate: new Date(2026, 5, 28)
+                },
+                {
+                    name: 'Phase 5: Taper → 🏁 Sprint Morzine',
+                    short: 'Phase 5',
+                    weeks: 'Semaine 8',
+                    dates: '29 juin - 5 juillet',
+                    startDate: new Date(2026, 5, 29),
+                    endDate: new Date(2026, 6, 5)
                 }
             ],
             days: {
@@ -755,65 +779,51 @@
                     phases: {
                         1: {
                             exercises: [
-                                { name: 'McGill Curl-Up', desc: '3×8 (10s hold)' },
-                                { name: 'Side Plank', desc: '3×15s/côté' },
-                                { name: 'Bird-Dog', desc: '3×6/côté' },
-                                { name: 'Cat-Cow', desc: '2×10' }
+                                { name: 'McGill Curl-Up', desc: '2×6 (10s hold)' },
+                                { name: 'Side Plank', desc: '2×15s/côté' },
+                                { name: 'Bird-Dog', desc: '2×6/côté' },
+                                { name: 'Cat-Cow', desc: '2×10' },
+                                { name: 'Vélo Z1', desc: '20-30 min facile (optionnel)' }
                             ],
-                            note: 'Z1 optionnel 15-20min vélo/marche en début de séance',
-                            videos: {
-                                'McGill Curl-Up': 'https://www.youtube.com/results?search_query=mcgill+curl+up+proper+form',
-                                'Side Plank': 'https://www.youtube.com/results?search_query=mcgill+side+plank+technique',
-                                'Bird-Dog': 'https://www.youtube.com/results?search_query=mcgill+bird+dog+exercise',
-                                'Cat-Cow': 'https://www.youtube.com/results?search_query=cat+cow+stretch+spine+mobility',
-                                'Pallof Press': 'https://www.youtube.com/results?search_query=pallof+press+anti+rotation+core'
-                            }
+                            note: 'J+1 post-Carcassonne. Très basse intensité, focus mobilité. Repos complet acceptable si fatigue.'
                         },
                         2: {
                             exercises: [
-                                { name: 'McGill Curl-Up', desc: '3×10 (10s hold)' },
-                                { name: 'Side Plank', desc: '3×25s/côté' },
+                                { name: 'McGill Curl-Up', desc: '3×8 (10s hold)' },
+                                { name: 'Side Plank', desc: '3×20s/côté' },
                                 { name: 'Bird-Dog', desc: '3×8/côté' },
                                 { name: 'Pallof Press', desc: '3×8/côté' },
                                 { name: 'Cat-Cow', desc: '2×10' }
                             ],
-                            note: '',
-                            videos: {
-                                'McGill Curl-Up': 'https://www.youtube.com/results?search_query=mcgill+curl+up+proper+form',
-                                'Side Plank': 'https://www.youtube.com/results?search_query=mcgill+side+plank+technique',
-                                'Bird-Dog': 'https://www.youtube.com/results?search_query=mcgill+bird+dog+exercise',
-                                'Cat-Cow': 'https://www.youtube.com/results?search_query=cat+cow+stretch+spine+mobility',
-                                'Pallof Press': 'https://www.youtube.com/results?search_query=pallof+press+anti+rotation+core'
-                            }
+                            note: 'Z1 optionnel 15-20 min vélo/marche en début de séance.'
                         },
                         3: {
+                            exercises: [
+                                { name: 'McGill Curl-Up', desc: '3×10 (10s hold)' },
+                                { name: 'Side Plank', desc: '3×25s/côté' },
+                                { name: 'Bird-Dog', desc: '3×10/côté' },
+                                { name: 'Pallof Press', desc: '3×10/côté' },
+                                { name: 'Dead Bug', desc: '3×8/côté' }
+                            ],
+                            note: 'Stabilité dynamique. Engagement transverse avant chaque mouvement.'
+                        },
+                        4: {
                             exercises: [
                                 { name: 'McGill Curl-Up', desc: '3×10 (12s hold)' },
                                 { name: 'Side Plank', desc: '3×30s/côté' },
                                 { name: 'Bird-Dog', desc: '3×10/côté' },
                                 { name: 'Pallof Press', desc: '3×10/côté' }
                             ],
-                            note: '',
-                            videos: {
-                                'McGill Curl-Up': 'https://www.youtube.com/results?search_query=mcgill+curl+up+proper+form',
-                                'Side Plank': 'https://www.youtube.com/results?search_query=mcgill+side+plank+technique',
-                                'Bird-Dog': 'https://www.youtube.com/results?search_query=mcgill+bird+dog+exercise',
-                                'Pallof Press': 'https://www.youtube.com/results?search_query=pallof+press+anti+rotation+core'
-                            }
+                            note: 'Maintien de la base de gainage. Pas d\'augmentation de volume — focus sur les autres jours.'
                         },
-                        4: {
+                        5: {
                             exercises: [
                                 { name: 'McGill Curl-Up', desc: '2×8' },
                                 { name: 'Side Plank', desc: '2×20s/côté' },
                                 { name: 'Bird-Dog', desc: '2×6/côté' },
                                 { name: 'Vélo/marche Z1', desc: '20-30 min facile (optionnel)' }
                             ],
-                            note: 'J-6 race. Mobilité hanches/dos en priorité. Si fatigue, repos complet acceptable.',
-                            videos: {
-                                'McGill Curl-Up': 'https://www.youtube.com/results?search_query=mcgill+curl+up+proper+form',
-                                'Side Plank': 'https://www.youtube.com/results?search_query=mcgill+side+plank+technique',
-                                'Bird-Dog': 'https://www.youtube.com/results?search_query=mcgill+bird+dog+exercise'
-                            }
+                            note: 'J-6 race Morzine. Mobilité hanches/dos en priorité. Repos complet OK si fatigue.'
                         }
                     }
                 },
@@ -824,25 +834,29 @@
                     color: '#f0a500',
                     phases: {
                         1: {
-                            text: 'Séance Hyrox externe — 1h (mardi soir)',
-                            note: 'Séance encadrée en salle. Maintenir l\'intensité habituelle.'
+                            text: 'Marche / vélo Z1 30 min + mobilité complète',
+                            note: 'Pas d\'Hyrox cette semaine. Récupération active uniquement.'
                         },
                         2: {
-                            text: 'Séance Hyrox externe — 1h (mardi soir)',
-                            note: 'Séance encadrée en salle. Maintenir l\'intensité habituelle.'
+                            text: 'Séance Hyrox externe — 1h',
+                            note: 'Reprise Hyrox, intensité modérée. RPE max 6. Pas de PR.'
                         },
                         3: {
-                            text: 'Séance Hyrox externe — 1h (mardi soir)',
-                            note: 'Séance encadrée en salle. Maintenir l\'intensité habituelle.'
+                            text: 'Séance Hyrox externe — 1h',
+                            note: 'Intensité élevée, RPE 7. Pousser sur les ateliers force (sled, farmer carry).'
                         },
                         4: {
+                            text: 'Séance Hyrox externe — 1h',
+                            note: 'Pic d\'intensité (RPE 8). Dernier vrai test avant le taper.'
+                        },
+                        5: {
                             exercises: [
                                 { name: 'Tapis incliné 4%', desc: '10 min Z2 (échauffement)' },
                                 { name: 'Allure course', desc: '4×30s allure soutenue (récup 1\'30 marche)' },
                                 { name: 'Farmer Carry', desc: '2×30m charge modérée (2×20kg)' },
                                 { name: 'Dead Hang actif', desc: '2×20s' }
                             ],
-                            note: 'J-5 race. Pas d\'Hyrox cette semaine. Séance courte 25 min, RPE max 5. Réveil neuro-musculaire, zéro fatigue résiduelle.'
+                            note: 'J-5 race Morzine. Pas d\'Hyrox. Séance courte 25 min, RPE max 5. Réveil neuro-musculaire.'
                         }
                     }
                 },
@@ -854,62 +868,45 @@
                     phases: {
                         1: {
                             exercises: [
-                                { name: 'Dead Hang actif', desc: '6×10s (repos 90s, focus position scapulaire)' },
-                                { name: 'Pull-ups assistés ou excentriques', desc: '3×5' },
-                                { name: 'Towel Hang', desc: '3×10s' },
-                                { name: 'Farmer Carry', desc: '3×20m (modéré)' },
-                                { name: 'Rope Pull câble', desc: '3×8' },
-                                { name: 'Face Pulls', desc: '3×12' }
+                                { name: 'Marche', desc: '30-40 min allure facile' },
+                                { name: 'Mobilité', desc: 'Cat-cow, ouverture hanches, ischio-jambiers, fléchisseurs hanches (10 min)' }
                             ],
-                            note: '',
-                            videos: {
-                                'Dead Hang actif': 'https://www.youtube.com/results?search_query=active+dead+hang+scapular+engagement',
-                                'Pull-ups': 'https://www.youtube.com/results?search_query=pull+up+proper+form+beginner',
-                                'Towel Hang': 'https://www.youtube.com/results?search_query=towel+hang+grip+training',
-                                'Farmer Carry': 'https://www.youtube.com/results?search_query=farmer+carry+proper+form',
-                                'Rope Pull': 'https://www.youtube.com/results?search_query=cable+rope+pull+hand+over+hand',
-                                'Face Pulls': 'https://www.youtube.com/results?search_query=face+pulls+rear+delt+form'
-                            }
+                            note: 'Récupération active. Pas de charge.'
                         },
                         2: {
                             exercises: [
-                                { name: 'Dead Hang actif', desc: '4×20-25s' },
-                                { name: 'Pull-ups', desc: '3×6-8' },
-                                { name: 'Towel Hang', desc: '3×15s' },
-                                { name: 'Farmer Carry', desc: '3×30m (charge++)' },
-                                { name: 'Rope Pull câble', desc: '3×10' },
-                                { name: 'Face Pulls', desc: '3×15' }
+                                { name: 'Dead Hang actif', desc: '4×15s (focus scapulae)' },
+                                { name: 'Pull-ups assistés', desc: '3×5' },
+                                { name: 'Towel Hang', desc: '3×10s' },
+                                { name: 'Farmer Carry', desc: '2×15m modéré' },
+                                { name: 'Face Pulls', desc: '3×12' }
                             ],
-                            note: '',
-                            videos: {
-                                'Dead Hang actif': 'https://www.youtube.com/results?search_query=active+dead+hang+scapular+engagement',
-                                'Pull-ups': 'https://www.youtube.com/results?search_query=pull+up+proper+form+beginner',
-                                'Towel Hang': 'https://www.youtube.com/results?search_query=towel+hang+grip+training',
-                                'Farmer Carry': 'https://www.youtube.com/results?search_query=farmer+carry+proper+form',
-                                'Rope Pull': 'https://www.youtube.com/results?search_query=cable+rope+pull+hand+over+hand',
-                                'Face Pulls': 'https://www.youtube.com/results?search_query=face+pulls+rear+delt+form'
-                            }
+                            note: 'Reprise grip. RPE 6 max.'
                         },
                         3: {
                             exercises: [
                                 { name: 'Dead Hang actif', desc: '5×30s' },
                                 { name: 'Pull-ups', desc: '4×max' },
                                 { name: 'Towel Hang', desc: '3×20s' },
-                                { name: 'Farmer Carry', desc: '4×30m (lourd)' },
+                                { name: 'Farmer Carry', desc: '4×25m (lourd)' },
+                                { name: 'Rope Climb technique', desc: '3 essais avec aide jambes (J-thread)' },
                                 { name: 'Rope Pull câble', desc: '4×10' },
                                 { name: 'Face Pulls', desc: '3×15' }
                             ],
-                            note: '',
-                            videos: {
-                                'Dead Hang actif': 'https://www.youtube.com/results?search_query=active+dead+hang+scapular+engagement',
-                                'Pull-ups': 'https://www.youtube.com/results?search_query=pull+up+proper+form+beginner',
-                                'Towel Hang': 'https://www.youtube.com/results?search_query=towel+hang+grip+training',
-                                'Farmer Carry': 'https://www.youtube.com/results?search_query=farmer+carry+proper+form',
-                                'Rope Pull': 'https://www.youtube.com/results?search_query=cable+rope+pull+hand+over+hand',
-                                'Face Pulls': 'https://www.youtube.com/results?search_query=face+pulls+rear+delt+form'
-                            }
+                            note: 'Travail technique Rope Climb (bête noire). Privilégier la qualité du J-thread.'
                         },
                         4: {
+                            exercises: [
+                                { name: 'Dead Hang actif', desc: '4×30s' },
+                                { name: 'Pull-ups', desc: '4×max + 1 série excentrique 3×8 (5s descente)' },
+                                { name: 'Towel Hang', desc: '3×20s' },
+                                { name: 'Farmer Carry', desc: '4×30m (très lourd)' },
+                                { name: 'Rope Climb', desc: '2 essais sans jambes (ou jambes minimales)' },
+                                { name: 'Multi-Rig simulation', desc: '3 séries : 3 KB swings (16-20kg) → 3 pull-ups → 3 muscle-up assistés' }
+                            ],
+                            note: 'Pic grip. Rope Climb et Multi-Rig en simulation course. Si rope sans jambes pas accessible, viser le minimum d\'aide.'
+                        },
+                        5: {
                             exercises: [
                                 { name: 'Marche', desc: '30-40 min allure facile' },
                                 { name: 'Mobilité dos', desc: 'Cat-cow, ouverture hanches, étirements ischio-jambiers' }
@@ -919,57 +916,51 @@
                     }
                 },
                 'JEUDI': {
-                    full: 'JEUDI - Cardio Spécifique Spartan',
+                    full: 'JEUDI - Cardio Spécifique Spartan + Genou',
                     type: 'cardio',
                     icon: '🏃',
                     color: '#4a9eff',
                     phases: {
                         1: {
                             exercises: [
-                                { name: 'Tapis incliné 4-6%', desc: '20min Z2' },
-                                { name: 'Burpees', desc: '3×5 (technique)' },
-                                { name: 'Step-ups', desc: '3×10/jambe' },
-                                { name: 'Farmer Carry', desc: '2×20m sous fatigue' }
+                                { name: 'Vélo Z1', desc: '30 min facile' },
+                                { name: 'Mobilité', desc: 'Hanches + chevilles (10 min)' }
                             ],
-                            note: '',
-                            videos: {
-                                'Burpees': 'https://www.youtube.com/results?search_query=spartan+race+burpee+penalty+technique',
-                                'Step-ups': 'https://www.youtube.com/results?search_query=step+ups+knee+friendly+form',
-                                'Farmer Carry': 'https://www.youtube.com/results?search_query=farmer+carry+proper+form'
-                            }
+                            note: 'Recovery week. Vélo doux uniquement OU repos complet selon ressenti.'
                         },
                         2: {
                             exercises: [
-                                { name: 'Tapis incliné 6%', desc: '25min Z2-Z3' },
-                                { name: 'Burpees', desc: '3×8' },
-                                { name: 'Step-ups', desc: '3×12/jambe (charge légère)' },
-                                { name: 'Farmer Carry', desc: '3×25m sous fatigue' }
+                                { name: 'Tapis incliné 4%', desc: '20 min Z2' },
+                                { name: 'Burpees', desc: '3×5 (technique)' },
+                                { name: 'Step-ups', desc: '3×8/jambe' },
+                                { name: 'Step-down lent', desc: '2×6/jambe (5s descente, focus excentrique quad gauche)' },
+                                { name: 'Farmer Carry', desc: '2×15m sous fatigue' }
                             ],
-                            note: '',
-                            videos: {
-                                'Burpees': 'https://www.youtube.com/results?search_query=spartan+race+burpee+penalty+technique',
-                                'Step-ups': 'https://www.youtube.com/results?search_query=step+ups+knee+friendly+form',
-                                'Farmer Carry': 'https://www.youtube.com/results?search_query=farmer+carry+proper+form'
-                            }
+                            note: 'Introduction du step-down excentrique pour le genou (LCA gauche). Descente très lente, contrôlée, sans à-coup.'
                         },
                         3: {
                             exercises: [
-                                { name: 'Tapis incliné 6-8%', desc: '30min avec 3× accélérations Z3-Z4' },
-                                { name: 'Burpees', desc: '4×10' },
-                                { name: 'Step-ups', desc: '4×12/jambe' },
-                                { name: 'Farmer Carry', desc: '3×30m sous fatigue' }
+                                { name: 'Tapis incliné 6%', desc: '25-30 min Z2-Z3' },
+                                { name: 'Burpees', desc: '4×8' },
+                                { name: 'Step-ups', desc: '4×10/jambe (charge légère 2×5kg)' },
+                                { name: 'Step-down lent', desc: '3×8/jambe (5s descente, charge légère)' },
+                                { name: 'Atlas Carry simulation', desc: 'Zercher carry kettlebell 24kg, 3×30m' },
+                                { name: 'Farmer Carry', desc: '3×25m sous fatigue' }
                             ],
-                            note: '',
-                            videos: {
-                                'Burpees': 'https://www.youtube.com/results?search_query=spartan+race+burpee+penalty+technique',
-                                'Step-ups': 'https://www.youtube.com/results?search_query=step+ups+knee+friendly+form',
-                                'Farmer Carry': 'https://www.youtube.com/results?search_query=farmer+carry+proper+form'
-                            }
+                            note: 'Travail spécifique Atlas Carry (bête noire) — Zercher carry sollicite le même pattern. Step-down quad gauche en priorité.'
                         },
                         4: {
                             exercises: [
+                                { name: 'Tempo Spartan', desc: '4 km tempo allure cible course (RPE 7-8)' },
+                                { name: 'Circuit obstacles enchaînés', desc: '3 tours : 8 burpees + 8 step-ups/j + 30m farmer carry + 5 pull-ups' },
+                                { name: 'Step-down', desc: '2×6/jambe (maintien)' }
+                            ],
+                            note: 'Simulation course : tempo + obstacles sous fatigue. RPE 8.'
+                        },
+                        5: {
+                            exercises: [
                                 { name: 'Run extérieur', desc: '25-30 min très facile, terrain plat' },
-                                { name: 'Accélérations', desc: '2-3×20s allure course, récup complète' },
+                                { name: 'Accélérations', desc: '2-3×20s allure course (récup complète)' },
                                 { name: 'Étirements', desc: '10 min mollets, ischio, fléchisseurs hanches' }
                             ],
                             note: 'J-3 race. Dernière vraie séance d\'activation. RPE max 4. Sortie en chaussures de course.'
@@ -984,108 +975,102 @@
                     phases: {
                         1: {
                             exercises: [
-                                { name: 'Split Squat', desc: '3×10/jambe' },
-                                { name: 'Band-assisted Row', desc: '3×12' },
-                                { name: 'Dumbbell Overhead Press', desc: '3×10' },
-                                { name: 'Dumbbell Thruster', desc: '3×10 — squat goblet + poussée verticale, flexion contrôlée ~60°' },
-                                { name: 'Hercules Hoist simulation câble', desc: '3×8' }
+                                { name: 'Mobilité complète', desc: '20 min : hanches, dos, épaules, chevilles' },
+                                { name: 'Étirements passifs', desc: '10 min focus chaîne postérieure' }
                             ],
-                            note: '',
-                            videos: {
-                                'Split Squat': 'https://www.youtube.com/results?search_query=split+squat+knee+safe+form',
-                                'Inverted Row': 'https://www.youtube.com/results?search_query=inverted+row+bodyweight',
-                                'Overhead Press': 'https://www.youtube.com/results?search_query=dumbbell+overhead+press+standing',
-                                'Dumbbell Thruster': 'https://www.youtube.com/results?search_query=dumbbell+thruster+technique+crossfit',
-                                'Hercules Hoist': 'https://www.youtube.com/results?search_query=spartan+race+hercules+hoist+training'
-                            }
+                            note: 'Pas de force cette semaine. Récupération profonde.'
                         },
                         2: {
                             exercises: [
-                                { name: 'Split Squat', desc: '3×12/jambe (charge légère)' },
-                                { name: 'Inverted Row', desc: '3×10' },
-                                { name: 'Dumbbell Overhead Press', desc: '3×12' },
-                                { name: 'Dumbbell Thruster', desc: '3×12 — squat goblet + poussée verticale, flexion contrôlée ~60°' },
-                                { name: 'Hercules Hoist simulation', desc: '3×10' },
-                                { name: 'Face Pulls', desc: '3×12' }
+                                { name: 'Split Squat', desc: '3×8/jambe (4s descente excentrique, charge modérée)' },
+                                { name: 'Inverted Row', desc: '3×8' },
+                                { name: 'DB Overhead Press', desc: '3×8' },
+                                { name: 'DB Thruster', desc: '3×8 (flexion contrôlée 60°)' },
+                                { name: 'Hercules Hoist simulation', desc: '3×8' }
                             ],
-                            note: '',
-                            videos: {
-                                'Split Squat': 'https://www.youtube.com/results?search_query=split+squat+knee+safe+form',
-                                'Inverted Row': 'https://www.youtube.com/results?search_query=inverted+row+bodyweight',
-                                'Overhead Press': 'https://www.youtube.com/results?search_query=dumbbell+overhead+press+standing',
-                                'Dumbbell Thruster': 'https://www.youtube.com/results?search_query=dumbbell+thruster+technique+crossfit',
-                                'Hercules Hoist': 'https://www.youtube.com/results?search_query=spartan+race+hercules+hoist+training'
-                            }
+                            note: 'Reprise force progressive. Excentrique lent sur split squat pour protéger le genou.'
                         },
                         3: {
                             exercises: [
-                                { name: 'Split Squat', desc: '4×12/jambe (charge)' },
-                                { name: 'Inverted Row', desc: '4×10' },
-                                { name: 'Dumbbell Push Press', desc: '3×10' },
-                                { name: 'Dumbbell Thruster', desc: '4×12 — squat goblet + poussée verticale, charge progressive' },
+                                { name: 'Split Squat', desc: '4×10/jambe (charge progressive)' },
+                                { name: 'Inverted Row', desc: '4×8' },
+                                { name: 'DB Push Press', desc: '3×8' },
+                                { name: 'DB Thruster', desc: '4×10 (charge progressive)' },
                                 { name: 'Hercules Hoist', desc: '4×10' },
-                                { name: 'Circuit final', desc: '3 rounds: burpees ×5 + dead hang à l\'échec + farmer carry 20m' }
+                                { name: 'Multi-Rig simulation', desc: '3 séries : 5 KB swings + 3 pull-ups + 1 muscle-up assisté' }
                             ],
-                            note: '',
-                            videos: {
-                                'Split Squat': 'https://www.youtube.com/results?search_query=split+squat+knee+safe+form',
-                                'Inverted Row': 'https://www.youtube.com/results?search_query=inverted+row+bodyweight',
-                                'Overhead Press': 'https://www.youtube.com/results?search_query=dumbbell+overhead+press+standing',
-                                'Dumbbell Thruster': 'https://www.youtube.com/results?search_query=dumbbell+thruster+technique+crossfit',
-                                'Hercules Hoist': 'https://www.youtube.com/results?search_query=spartan+race+hercules+hoist+training'
-                            }
+                            note: 'Travail Multi-Rig en post-fatigue cardio. Focus transitions horizontales.'
                         },
                         4: {
+                            exercises: [
+                                { name: 'Split Squat', desc: '4×10/jambe (charge lourde)' },
+                                { name: 'Inverted Row', desc: '4×10' },
+                                { name: 'DB Push Press', desc: '4×8' },
+                                { name: 'DB Thruster', desc: '4×10 (charge maximale contrôlée)' },
+                                { name: 'Hercules Hoist', desc: '4×10 (charge lourde)' },
+                                { name: 'Circuit Multi-Rig final', desc: '3 rounds : 5 KB swings 24kg + 3 pull-ups + 30m farmer carry + 5 burpees' }
+                            ],
+                            note: 'Pic force. Charges au plus haut. Le circuit final simule l\'enchaînement obstacles fin de course.'
+                        },
+                        5: {
                             text: '🛌 REPOS COMPLET',
-                            note: 'J-2 race. Préparation matos (chaussures, sac, tenue), hydratation +15%, repas riche en glucides complexes le soir. Pas d\'alcool, coucher tôt.'
+                            note: 'J-2 race Morzine. Préparation matos (chaussures, sac, tenue), hydratation +15%, repas riche en glucides complexes le soir. Pas d\'alcool, coucher tôt.'
                         }
                     }
                 },
                 'SAMEDI': {
-                    full: 'SAMEDI - Cardio Z2',
+                    full: 'SAMEDI - Cardio Z2 (trail prioritaire)',
                     type: 'cardio_z2',
                     icon: '🏃‍♂️',
                     color: '#1abc9c',
                     phases: {
                         1: {
-                            text: '30min Z2 strict — trail, route ou tapis incliné 4-6%',
-                            note: 'Allure conversationnelle. Ne pas dépasser Z2.'
+                            text: 'Marche 45 min Z1 (récupération active)',
+                            note: 'Pas de course cette semaine. Marche plate.'
                         },
                         2: {
-                            text: '40min Z2 + accélérations Z3 optionnelles en fin de sortie (2×30s)',
-                            note: ''
+                            text: '30-40 min Z2 — trail si possible (trail technique encore léger), sinon route ou tapis incliné 4-6%',
+                            note: 'Reprise course Z2. Allure conversationnelle. Ne pas dépasser Z2.'
                         },
                         3: {
-                            text: '45min Z2 + 4 accélérations Z3-Z4 (simule redémarrages post-obstacle)',
-                            note: ''
+                            text: '50-60 min Z2 + 2 accélérations Z3 30s — TRAIL recommandé (préparation Morzine)',
+                            note: 'Sortie longue. Trail avec dénivelé léger pour préparer le terrain Morzine. Si pas de trail dispo, tapis incliné 6%.'
                         },
                         4: {
+                            text: '45 min Z2 + 4 accélérations Z3-Z4 30s — TRAIL si possible',
+                            note: 'Simule redémarrages post-obstacle. Accélérations sur portion plate après une descente technique.'
+                        },
+                        5: {
                             text: '15 min activation : marche rapide + 5-6 burpees de réveil + 10 squats à vide',
-                            note: 'J-1 race. Activation très courte le matin. Voyage Carcassonne, retrait dossard, repérage si possible. Repas glucides midi + léger soir. Coucher tôt.'
+                            note: 'J-1 race. Activation très courte le matin. Voyage Morzine, retrait dossard, repérage si possible. Repas glucides midi + léger soir. Coucher tôt.'
                         }
                     }
                 },
                 'DIMANCHE': {
-                    full: 'DIMANCHE - Hyrox',
+                    full: 'DIMANCHE - Hyrox + simulation',
                     type: 'hyrox',
                     icon: '⚡',
                     color: '#f0a500',
                     phases: {
                         1: {
-                            text: 'Séance Hyrox externe — 1h (dimanche matin)',
-                            note: ''
+                            text: 'Repos OU Hyrox externe TRÈS facile selon ressenti',
+                            note: 'Recovery week. Si fatigue, repos complet. Si bonnes sensations, Hyrox light.'
                         },
                         2: {
-                            text: 'Séance Hyrox externe — 1h (dimanche matin)',
-                            note: ''
+                            text: 'Séance Hyrox externe — 1h (intensité modérée)',
+                            note: 'RPE 6. Pas de PR.'
                         },
                         3: {
-                            text: 'Séance Hyrox externe — 1h (dimanche matin)',
-                            note: ''
+                            text: 'Séance Hyrox externe — 1h + sortie trail technique 30-45 min si possible',
+                            note: 'Double session si forme et terrain disponibles. Trail technique pour acclimater le genou aux descentes (privilégier descentes contrôlées).'
                         },
                         4: {
-                            text: '🏁 SPARTAN RACE SUPER — Carcassonne',
-                            note: 'Jour J ! 10 km, 25 obstacles. Échauffement progressif 15 min. Hydratation +sodium dès le réveil. Bonne course, Spartan !'
+                            text: 'S6 : Hyrox externe 1h. S7 (28 juin) : SIMULATION SPRINT MORZINE — 5 km + 15-20 obstacles à intensité course',
+                            note: 'Test grandeur nature en S7. Mesurer le temps, identifier les points faibles, ajuster l\'allure cible.'
+                        },
+                        5: {
+                            text: '🏁 SPARTAN SPRINT — Morzine',
+                            note: 'Jour J ! 5 km, ~20 obstacles. Échauffement progressif 15 min + spécifique (genou, grip). Hydratation +sodium dès le réveil. Bonne course, Spartan !'
                         }
                     }
                 }
@@ -1110,7 +1095,7 @@
         }
 
         function getDaysUntilRace() {
-            const raceDate = new Date(2026, 4, 10);
+            const raceDate = new Date(2026, 6, 4);
             const today = new Date();
             const diff = raceDate - today;
             return Math.ceil(diff / (1000 * 60 * 60 * 24));
