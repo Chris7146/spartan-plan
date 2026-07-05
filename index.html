@@ -558,7 +558,7 @@
         <!-- Header -->
         <div class="header">
             <div class="header-title">Spartan Plan</div>
-            <div class="header-subtitle">Sprint 5km • Morzine • 4 juillet 2026</div>
+            <div class="header-subtitle">Super • Jablines • 19 sept → Beast • Estérel • 3 oct 2026</div>
             <div class="countdown">J-<span id="daysLeft">0</span></div>
         </div>
 
@@ -575,15 +575,15 @@
                 <div class="section">
                     <div class="section-title">Périodisation</div>
                     <div class="section-content">
-                        <strong>Récupération → Reconstruction → Construction → Pic → Taper</strong><br><br>
-                        Cycle 8 semaines vers la Sprint Morzine (4 juillet 2026), puis Jablines (Super+Sprint, 19 sept) et Estérel (Beast, 3 oct).<br><br>
-                        <strong>Semaine 1 (11-17 mai):</strong> Récupération active post-Carcassonne<br>
-                        <strong>Semaines 2-3 (18-31 mai):</strong> Reconstruction — base aérobie, force progressive, eccentric quad genou<br>
-                        <strong>Semaines 4-5 (1-14 juin):</strong> Construction spécifique — volume, Atlas/Rope/Multi-Rig, trail montagne<br>
-                        <strong>Semaine du 15-21 juin :</strong> ⚠️ Covid-19 — semaine entièrement à l'arrêt (repos forcé)<br>
-                        <strong>Semaine du 22-28 juin :</strong> Reprise post-Covid progressive — Z1→Z2, charges basses, surveillance souffle/FC, zéro intensité maximale<br>
-                        <strong>🌡️ Canicule (pic 21-28 juin, &gt;40°C) :</strong> séances aux heures fraîches (avant 8h / après 21h) ou en salle climatisée ; tapis plutôt que trail extérieur tant que le pic dure ; effort réglé à la sensation (RPE), pas à l'allure — la FC monte de 10-20 bpm à la chaleur ; hydratation + sel avant/pendant/après ; arrêt immédiat si mal de tête, nausée, vertige ou frissons. Chaleur + reprise post-Covid = prudence renforcée, et nuits chaudes = sommeil dégradé, donc tolérer un volume moindre.<br>
-                        <strong>Semaine 8 (29 juin-4 juillet):</strong> Taper → 🏁 Sprint Morzine le samedi 4/07. Décision finale de courir à J-4/J-3 selon récupération
+                        <strong>Récupération → Rebuild → Nomade → Spécifique → Affûtage → Courses</strong><br><br>
+                        Cycle 13 semaines vers la Super Jablines (sam 19 septembre) puis la Beast Estérel (sam 3 octobre) — l'objectif majeur 2026. Bilan Morzine : 1h21'23", centile 0,67 (record), Atlas Carry réussi. Chantier unique restant : grip/traction (Monkey Bars, Rope Climb, Z-Wall, Multi-Rig = 100% des échecs).<br><br>
+                        <strong>Sem 1 (6-12 juil):</strong> Récupération post-Morzine — décharge, trapèzes sensibles (chaîne)<br>
+                        <strong>Sem 2-4 (13 juil-2 août):</strong> Rebuild + Grip bloc I — repeaters dead hang (7s/3s), progression tractions, sorties longues 60→105 min<br>
+                        <strong>Sem 5-6 (3-16 août):</strong> Été nomade — plan sans salle, permutable selon les dates de vacances (la sortie longue du samedi reste non négociable)<br>
+                        <strong>Sem 7-9 (17 août-6 sept):</strong> Spécifique Beast + Grip bloc II — sorties longues 2h→3h avec D+, 3 tests nutrition, street workout, simulation obstacles<br>
+                        <strong>Sem 10-11 (7-19 sept):</strong> Affûtage → 🏁 Super Jablines sam 19/09. Objectifs : ≥85% obstacles + 1ère Rope Climb, puis le chrono<br>
+                        <strong>Sem 12-13 (20 sept-3 oct):</strong> Pont récup/mini-taper → 🏁 Beast Estérel sam 3/10. Objectif : finir proprement. GO/NO-GO dimanche 27/09 (genou, dos, fatigue)<br>
+                        <strong>🌡️ Été :</strong> séances avant 9h ou en salle climatisée par pic de chaleur ; effort réglé au RPE, pas à l'allure ; hydratation + sel systématiques
                     </div>
                 </div>
 
@@ -748,44 +748,52 @@
         const trainingData = {
             phases: [
                 {
-                    name: 'Phase 1: Récupération',
+                    name: 'Phase 1: Récupération post-Morzine',
                     short: 'Phase 1',
                     weeks: 'Semaine 1',
-                    dates: '11 - 17 mai',
-                    startDate: new Date(2026, 4, 11),
-                    endDate: new Date(2026, 4, 17)
+                    dates: '6 - 12 juillet',
+                    startDate: new Date(2026, 6, 5),
+                    endDate: new Date(2026, 6, 12)
                 },
                 {
-                    name: 'Phase 2: Reconstruction',
+                    name: 'Phase 2: Rebuild + Grip I',
                     short: 'Phase 2',
-                    weeks: 'Semaines 2-3',
-                    dates: '18 - 31 mai',
-                    startDate: new Date(2026, 4, 18),
-                    endDate: new Date(2026, 4, 31)
+                    weeks: 'Semaines 2-4',
+                    dates: '13 juillet - 2 août',
+                    startDate: new Date(2026, 6, 13),
+                    endDate: new Date(2026, 7, 2)
                 },
                 {
-                    name: 'Phase 3: Construction spécifique',
+                    name: 'Phase 3: Été nomade (vacances)',
                     short: 'Phase 3',
-                    weeks: 'Semaines 4-5',
-                    dates: '1 - 14 juin',
-                    startDate: new Date(2026, 5, 1),
-                    endDate: new Date(2026, 5, 14)
+                    weeks: 'Semaines 5-6',
+                    dates: '3 - 16 août',
+                    startDate: new Date(2026, 7, 3),
+                    endDate: new Date(2026, 7, 16)
                 },
                 {
-                    name: 'Phase 4: Reprise post-Covid',
+                    name: 'Phase 4: Spécifique Beast + Grip II',
                     short: 'Phase 4',
-                    weeks: 'Semaines 6-7',
-                    dates: '22 - 28 juin',
-                    startDate: new Date(2026, 5, 15),
-                    endDate: new Date(2026, 5, 28)
+                    weeks: 'Semaines 7-9',
+                    dates: '17 août - 6 septembre',
+                    startDate: new Date(2026, 7, 17),
+                    endDate: new Date(2026, 8, 6)
                 },
                 {
-                    name: 'Phase 5: Taper → 🏁 Sprint Morzine',
+                    name: 'Phase 5: Affûtage → 🏁 Super Jablines (sam 19/09)',
                     short: 'Phase 5',
-                    weeks: 'Semaine 8',
-                    dates: '29 juin - 5 juillet',
-                    startDate: new Date(2026, 5, 29),
-                    endDate: new Date(2026, 6, 5)
+                    weeks: 'Semaines 10-11',
+                    dates: '7 - 19 septembre',
+                    startDate: new Date(2026, 8, 7),
+                    endDate: new Date(2026, 8, 19)
+                },
+                {
+                    name: 'Phase 6: Pont → 🏁 Beast Estérel (sam 3/10)',
+                    short: 'Phase 6',
+                    weeks: 'Semaines 12-13',
+                    dates: '20 septembre - 4 octobre',
+                    startDate: new Date(2026, 8, 20),
+                    endDate: new Date(2026, 9, 4)
                 }
             ],
             days: {
@@ -797,52 +805,56 @@
                     phases: {
                         1: {
                             exercises: [
-                                { name: 'McGill Curl-Up', desc: '2×6 (10s hold)' },
-                                { name: 'Side Plank', desc: '2×15s/côté' },
+                                { name: 'McGill Curl-Up', desc: '2×8 (10s hold)' },
+                                { name: 'Side Plank', desc: '2×20s/côté' },
                                 { name: 'Bird-Dog', desc: '2×6/côté' },
                                 { name: 'Cat-Cow', desc: '2×10' },
-                                { name: 'Vélo Z1', desc: '20-30 min facile (optionnel)' }
+                                { name: 'Marche/vélo Z1', desc: '20-30 min facile (optionnel)' }
                             ],
-                            note: 'J+1 post-Carcassonne. Très basse intensité, focus mobilité. Repos complet acceptable si fatigue.'
+                            note: 'J+2 post-Morzine. Semaine de décharge. Trapèzes sensibles (porté de chaîne) : rien au-dessus de la tête cette semaine.'
                         },
                         2: {
                             exercises: [
-                                { name: 'McGill Curl-Up', desc: '3×8 (10s hold)' },
-                                { name: 'Side Plank', desc: '3×20s/côté' },
-                                { name: 'Bird-Dog', desc: '3×8/côté' },
-                                { name: 'Pallof Press', desc: '3×8/côté' },
-                                { name: 'Cat-Cow', desc: '2×10' }
-                            ],
-                            note: 'Z1 optionnel 15-20 min vélo/marche en début de séance.'
-                        },
-                        3: {
-                            exercises: [
                                 { name: 'McGill Curl-Up', desc: '3×10 (10s hold)' },
-                                { name: 'Side Plank', desc: '3×25s/côté' },
+                                { name: 'Side Plank', desc: '3×30s/côté' },
                                 { name: 'Bird-Dog', desc: '3×10/côté' },
                                 { name: 'Pallof Press', desc: '3×10/côté' },
                                 { name: 'Dead Bug', desc: '3×8/côté' }
                             ],
-                            note: 'Stabilité dynamique. Engagement transverse avant chaque mouvement.'
+                            note: 'McGill complet + Z1 optionnel 15-20 min. Engagement transverse avant chaque mouvement — le dos est silencieux depuis avril, on ne relâche pas.'
+                        },
+                        3: {
+                            exercises: [
+                                { name: 'McGill au sol', desc: 'Curl-up 3×10 + side plank 3×25s + bird-dog 3×10 (aucun matériel)' },
+                                { name: 'Marche', desc: '30 min allure libre' }
+                            ],
+                            note: 'Mode nomade : le Big 3 se fait partout (plage, chambre, jardin). Non négociable même en vacances.'
                         },
                         4: {
                             exercises: [
-                                { name: 'McGill Curl-Up', desc: '2×6 (10s hold)' },
-                                { name: 'Side Plank', desc: '2×15s/côté' },
-                                { name: 'Bird-Dog', desc: '2×6/côté' },
-                                { name: 'Cat-Cow', desc: '2×10' },
-                                { name: 'Vélo Z1', desc: '20 min très facile (optionnel)' }
+                                { name: 'McGill Curl-Up', desc: '3×10 (12s hold)' },
+                                { name: 'Side Plank', desc: '3×30s/côté' },
+                                { name: 'Bird-Dog', desc: '3×10/côté' },
+                                { name: 'Pallof Press', desc: '3×10/côté' },
+                                { name: 'Vélo Z1', desc: '20 min (optionnel)' }
                             ],
-                            note: 'J1 reprise post-Covid. Très basse intensité, mobilité avant tout. Surveiller FC de repos et tout essoufflement anormal. Repos complet OK à la moindre fatigue.'
+                            note: 'Bloc le plus chargé du plan : surveiller sommeil, FC de repos et envie. Un signal qui dérape = enlever une séance, pas serrer les dents.'
                         },
                         5: {
                             exercises: [
-                                { name: 'McGill Curl-Up', desc: '2×8' },
-                                { name: 'Side Plank', desc: '2×20s/côté' },
-                                { name: 'Bird-Dog', desc: '2×6/côté' },
-                                { name: 'Vélo/marche Z1', desc: '20-30 min facile (optionnel)' }
+                                { name: 'McGill Curl-Up', desc: '2×8-10' },
+                                { name: 'Side Plank', desc: '2×25s/côté' },
+                                { name: 'Bird-Dog', desc: '2×8/côté' },
+                                { name: 'Mobilité complète', desc: '10 min hanches/dos/épaules' }
                             ],
-                            note: 'J-5 race Morzine (samedi 4/07). Mobilité hanches/dos en priorité. Repos complet OK si fatigue.'
+                            note: 'Affûtage : entretien seulement. S11 : semaine de course (Jablines samedi 19/09).'
+                        },
+                        6: {
+                            exercises: [
+                                { name: 'McGill doux', desc: 'Curl-up 2×6 + side plank 2×15s + bird-dog 2×6' },
+                                { name: 'Marche', desc: '20-30 min très facile' }
+                            ],
+                            note: '21/09 : J+2 Super — tout en douceur. 28/09 : McGill léger + mobilité complète (J-5 Beast).'
                         }
                     }
                 },
@@ -853,29 +865,28 @@
                     color: '#f0a500',
                     phases: {
                         1: {
-                            text: 'Marche / vélo Z1 30 min + mobilité complète',
-                            note: 'Pas d\'Hyrox cette semaine. Récupération active uniquement.'
+                            text: 'Marche / vélo Z1 30-40 min + mobilité complète',
+                            note: 'Pas d\'Hyrox cette semaine. Récupération active uniquement (J+3 course).'
                         },
                         2: {
                             text: 'Séance Hyrox externe — 1h',
-                            note: 'Reprise Hyrox, intensité modérée. RPE max 6. Pas de PR.'
+                            note: 'RPE 6 la première semaine (14/07), puis RPE 7. Pousser les ateliers portés (sled, farmer carry) — transfert direct obstacles.'
                         },
                         3: {
-                            text: 'Séance Hyrox externe — 1h',
-                            note: 'Intensité élevée, RPE 7. Pousser sur les ateliers force (sled, farmer carry).'
+                            text: 'Run vallonné 40-45 min avec 8×30s en côte (récup en descente marchée) OU circuit PdC 30 min : burpees, squats tempo, fentes arrière, pompes, planche',
+                            note: 'Mode nomade. Si un club Hyrox est accessible sur le lieu de vacances, séance normale RPE 7.'
                         },
                         4: {
-                            text: 'Marche / vélo Z1-Z2 30-40 min + mobilité complète',
-                            note: 'PAS d\'Hyrox cette semaine. Premier test cardio léger post-Covid. Allure facile, RPE max 4. Si essoufflement anormal ou FC qui s\'emballe, écourter et se reposer. 🌡️ Canicule : tôt le matin ou en salle climatisée (vélo), jamais en plein soleil. Hydratation + sel.'
+                            text: 'Séance Hyrox externe — 1h',
+                            note: 'RPE 7-8, phase la plus intense. Si club fermé (été) : run côtes 45 min (10×45s) ou circuit équivalent maison.'
                         },
                         5: {
-                            exercises: [
-                                { name: 'Tapis incliné 4%', desc: '10 min Z2 (échauffement)' },
-                                { name: 'Allure course', desc: '3-4×30s allure soutenue (récup 1\'30 marche)' },
-                                { name: 'Farmer Carry', desc: '2×30m charge modérée (2×20kg)' },
-                                { name: 'Dead Hang actif', desc: '2×20s' }
-                            ],
-                            note: 'J-4 race. Pas d\'Hyrox. Séance courte 25 min, RPE max 5, réveil neuro-musculaire. 🩺 Point de décision Morzine : évalue souffle, FC et énergie — la reprise post-Covid se passe-t-elle franchement bien ?'
+                            text: 'S10 (08/09) : Hyrox modéré RPE 6 · S11 (15/09, J-4) : activation 25 min — tapis 10 min Z2 + 3×30s allure + farmer léger + dead hang 2×20s',
+                            note: 'Affûtage : plus aucune intensité maximale à partir du 14/09.'
+                        },
+                        6: {
+                            text: '22/09 : vélo/marche Z1 30 min (récup Super) · 29/09 (J-4 Beast) : activation 25 min — 10 min Z2 + 3×30s allure + dead hang 2×20s',
+                            note: 'Entre les deux courses, chaque mardi est léger : la forme est faite, il faut la garder fraîche.'
                         }
                     }
                 },
@@ -887,53 +898,51 @@
                     phases: {
                         1: {
                             exercises: [
-                                { name: 'Marche', desc: '30-40 min allure facile' },
-                                { name: 'Mobilité', desc: 'Cat-cow, ouverture hanches, ischio-jambiers, fléchisseurs hanches (10 min)' }
+                                { name: 'Dead Hang actif', desc: '3×15s' },
+                                { name: 'Tractions scapulaires', desc: '3×6 (bras tendus)' },
+                                { name: 'Towel Hang', desc: '3×10s' },
+                                { name: 'Farmer Carry', desc: '2×15m @ 2×20 kg' }
                             ],
-                            note: 'Récupération active. Pas de charge.'
+                            note: 'Réactivation très légère, RPE 5 max. Trapèzes encore marqués par le porté de chaîne : on rouvre les patterns sans charger. Les repeaters démarrent en Phase 2.'
                         },
                         2: {
                             exercises: [
-                                { name: 'Dead Hang actif', desc: '4×15s (focus scapulae)' },
-                                { name: 'Tractions scapulaires', desc: '3×6 (bras tendus, omoplates actives)' },
-                                { name: 'Tractions négatives pronation', desc: '3×3, descente 4-5s (montée au marchepied)' },
-                                { name: 'Tirage anneaux (inverted row)', desc: '3×8 pronation — corps incliné, facile pour la reprise' },
-                                { name: 'Towel Hang', desc: '3×10-15s' },
-                                { name: 'Farmer Carry', desc: '2×15m @ 2×20-22,5 kg' },
-                                { name: 'Rope Pull câble', desc: '3×10 @ 20-22,5 kg' },
-                                { name: 'Face Pulls', desc: '3×12 @ 12,5-15 kg' }
+                                { name: 'Repeaters dead hang', desc: '7s suspension / 3s repos ×6 = 1 tour · 3 tours (repos 2-3 min)' },
+                                { name: 'Tractions assistées pronation', desc: '4×5 @ contre-charge -40 → -35 kg' },
+                                { name: 'Tractions négatives', desc: '4×3, descente 5-6s' },
+                                { name: 'Towel Hang', desc: '3×20-25s' },
+                                { name: 'Déplacement latéral suspendu', desc: '2-3× max de longueur sur la barre (sim Multi-Rig/Monkey Bars)' },
+                                { name: 'Farmer Carry', desc: '4×25m @ 2×25 kg' },
+                                { name: 'Face Pulls', desc: '3×15 @ 17,5-20 kg' }
                             ],
-                            note: 'Reprise grip. RPE 6 max. Charges en bas de fourchette si fatigue post-virus.'
+                            note: 'GRIP bloc I — protocole repeaters (Lopez-Rivera : +34-45% d\'endurance de grip en 4 sem). Jamais à l\'échec sur négatives et suspensions : tendons > ego. S4 (29/07) : test dead hang max, cible 40-45s. Bonus « greasing the groove » les autres jours.'
                         },
                         3: {
                             exercises: [
-                                { name: 'Dead Hang actif', desc: '4×25-30s (omoplates déprimées/rétractées)' },
-                                { name: 'Tractions scapulaires', desc: '3×8 (bras tendus, activer les omoplates sans plier les coudes)' },
-                                { name: 'Tractions négatives pronation', desc: '4×3 — montée au marchepied/saut, descente lente 5s, largeur épaules' },
-                                { name: 'Tirage anneaux (inverted row)', desc: '3×10 pronation + 1 série prise neutre — pieds avancés, régler l\'angle du corps pour la difficulté' },
-                                { name: 'Towel Hang', desc: '3×20s (grip)' },
-                                { name: 'Farmer Carry', desc: '4×25m @ 2×22,5-25 kg' },
-                                { name: 'Rope Climb technique', desc: '3 essais avec aide jambes (J-thread)' }
+                                { name: 'Portique / branche / aire de jeux', desc: 'Dead hangs 4×20s + négatives 3×3 + towel hang (serviette sur la barre) 3×15s' },
+                                { name: 'Sinon (zéro barre)', desc: 'Tirage isométrique serviette 3×30s + pinch carry bidons 4×30m + « farmer » valises/sacs' },
+                                { name: 'Corde 2-3 m (si emportée)', desc: '10 min de verrouillage J-hook, pieds au sol' }
                             ],
-                            note: 'Base tractions calibrée niveau actuel (0-2 strictes). Priorité pronation + neutre, largeur épaules. Le négatif construit la force, le tirage anneaux le volume. Jamais à l\'échec sur le négatif : garder la descente contrôlée 5s. Bonus « greasing the groove » : 2-3 tractions ou négatives faciles glissées les autres jours accélèrent nettement les gains. Travail technique Rope Climb (bête noire) — qualité du J-thread.'
+                            note: 'Grip nomade : 2 stimulus/sem même rudimentaires suffisent à maintenir les gains du bloc I. Repérer une aire de street workout près du lieu de vacances — monkey bars réels = le seul vrai transfert.'
                         },
                         4: {
                             exercises: [
-                                { name: 'Dead Hang actif', desc: '4×15s' },
-                                { name: 'Tractions scapulaires', desc: '3×6 (bras tendus, omoplates actives)' },
-                                { name: 'Tractions négatives pronation', desc: '3×3, descente 5s (largeur épaules)' },
-                                { name: 'Tirage anneaux (inverted row)', desc: '3×8 pronation — corps incliné, facile pour la reprise' },
-                                { name: 'Towel Hang', desc: '3×12s' },
-                                { name: 'Farmer Carry', desc: '2×15m @ 2×20 kg' }
+                                { name: 'Repeaters dead hang', desc: '7s/3s ×6 · 4-5 tours' },
+                                { name: 'Tractions assistées pronation', desc: '4×5 @ contre-charge -30 → -25 kg' },
+                                { name: 'Tractions négatives', desc: '4×4, descente 7-8s' },
+                                { name: 'Towel Hang asymétrique', desc: '3×10-15s par main (une main haute, une basse)' },
+                                { name: 'Déplacements latéraux suspendus', desc: '3×5-8m avec changements de prise' },
+                                { name: 'Farmer Carry', desc: '4×30-40m @ 2×27,5-30 kg' }
                             ],
-                            note: 'Reprise grip légère post-Covid : volume réduit, charges basses, RPE 5 max, jamais à l\'échec. On rouvre les patterns (tractions/grip), on ne cherche pas la performance. Rope Climb/Multi-Rig reportés à la semaine de relance complète après Morzine.'
+                            note: 'GRIP bloc II — endurance + transitions. Street workout 1×/quinzaine : monkey bars réels + corde (J-hook appris cet été). Magnésie comme en course pour ancrer la routine mains sèches.'
                         },
                         5: {
-                            exercises: [
-                                { name: 'Marche', desc: '30-40 min allure facile' },
-                                { name: 'Mobilité dos', desc: 'Cat-cow, ouverture hanches, étirements ischio-jambiers' }
-                            ],
-                            note: 'J-3 race. Repos actif, aucune charge. ✅ Décision finale Morzine au plus tard aujourd\'hui : courir si la reprise est franchement bonne, sinon basculer l\'objectif sur Jablines sans regret.'
+                            text: 'S10 (09/09) : grip réduit -40% — repeaters 2-3 tours, négatives 3×3, towel 3×15s, farmer léger · S11 (16/09, J-3) : marche 30 min + mobilité, aucune charge',
+                            note: 'L\'affûtage garde l\'intensité, supprime le volume. ✅ Objectifs Jablines : ≥85% d\'obstacles + première Rope Climb en course.'
+                        },
+                        6: {
+                            text: '23/09 : réactivation légère — dead hang 3×20s, rows 3×8, towel 3×15s (RPE 5) · 30/09 (J-3 Beast) : marche 30 min + mobilité, zéro charge',
+                            note: 'Aucune séance grip lourde entre les deux courses : le niveau est acquis, la fraîcheur fait la différence.'
                         }
                     }
                 },
@@ -945,48 +954,46 @@
                     phases: {
                         1: {
                             exercises: [
-                                { name: 'Vélo Z1', desc: '30 min facile' },
+                                { name: 'Tapis incliné 4%', desc: '20-25 min Z2' },
+                                { name: 'Step-down lent', desc: '2×6/jambe (5s descente)' },
                                 { name: 'Mobilité', desc: 'Hanches + chevilles (10 min)' }
                             ],
-                            note: 'Recovery week. Vélo doux uniquement OU repos complet selon ressenti.'
+                            note: 'Reprise douce. ⚠️ Surveiller l\'ischio gauche (signal du 14/06) sur la reprise du volume de course.'
                         },
                         2: {
                             exercises: [
-                                { name: 'Tapis incliné 4%', desc: '20 min Z2' },
-                                { name: 'Burpees', desc: '3×5 (technique)' },
-                                { name: 'Step-ups', desc: '3×8/jambe (poids du corps)' },
-                                { name: 'Step-down lent', desc: '2×6/jambe (5s descente, focus excentrique quad gauche)' },
-                                { name: 'Farmer Carry', desc: '2×15m @ 2×20-22,5 kg sous fatigue' }
+                                { name: 'Tapis incliné 6%', desc: '30 min Z2-Z3' },
+                                { name: 'Burpees', desc: '4×8' },
+                                { name: 'Bulgarian Split Squat', desc: '3×8/jambe @ 12 kg (descente 4-5s, étirement quad complet)' },
+                                { name: 'Step-down lent', desc: '3×8/jambe @ 2×5 kg' },
+                                { name: 'Atlas Zercher carry', desc: 'KB 24 kg, 3×30m — on entretient l\'acquis Atlas' }
                             ],
-                            note: 'Introduction du step-down excentrique pour le genou (LCA gauche). Descente très lente, contrôlée, sans à-coup.'
+                            note: 'Le bloc excentrique continue : c\'est lui qui a rendu les 427m de descente de Morzine indolores. On ne touche pas à ce qui marche.'
                         },
                         3: {
                             exercises: [
-                                { name: 'Tapis incliné 6%', desc: '25-30 min Z2-Z3' },
-                                { name: 'Burpees', desc: '4×8' },
-                                { name: 'Bulgarian Split Squat', desc: '3×8/jambe @ 2×8-10 kg (4-5s descente excentrique, étirement quad complet en bas)' },
-                                { name: 'Step-down lent', desc: '3×8/jambe (5s descente, charge légère 2×5 kg)' },
-                                { name: 'Atlas Carry simulation', desc: 'Zercher carry kettlebell 24 kg, 3×30m' },
-                                { name: 'Farmer Carry', desc: '3×25m @ 2×22,5-25 kg sous fatigue' }
+                                { name: 'Run vallonné', desc: '40-50 min, descentes en pas courts cadence haute' },
+                                { name: 'Fentes arrière', desc: '3×12/jambe' },
+                                { name: 'Step-downs sur une marche', desc: '3×10/jambe (5s descente)' }
                             ],
-                            note: 'Bulgarian Split Squat = nouvelle pièce maîtresse (hypertrophie quad en étirement long, Maeo et al. 2023). Descente lente protectrice du LCA. Step-down quad gauche en priorité. Travail spécifique Atlas Carry (bête noire) — Zercher carry sollicite le même pattern.'
+                            note: 'Mode nomade : le travail genou tient avec un escalier ou une marche. Descentes techniques = entraînement, pas subies.'
                         },
                         4: {
                             exercises: [
-                                { name: 'Tapis incliné 4%', desc: '25-30 min Z2 (allure conversationnelle)' },
-                                { name: 'Burpees', desc: '3×5 (technique, descente en planche)' },
-                                { name: 'Step-down lent', desc: '3×6/jambe (5s descente, focus quad gauche)' },
-                                { name: 'Farmer Carry', desc: '2×20m @ 2×20 kg' }
+                                { name: 'Tapis incliné 6-8%', desc: '35-40 min avec 4-5×30-45s Z3-Z4 (redémarrages post-obstacle)' },
+                                { name: 'Bulgarian Split Squat', desc: '4×8/jambe @ 12-14 kg' },
+                                { name: 'Step-down lent', desc: '3×10/jambe' },
+                                { name: 'Burpees sous fatigue', desc: '5×10 en fin de séance' }
                             ],
-                            note: '2e test cardio post-Covid. Z2 strict, surveiller souffle et genou gauche. Aucune accélération cette semaine. 🌡️ Canicule : tapis en salle climatisée privilégié (déjà prévu ici). Hydratation avant/pendant, sel après.'
+                            note: 'Accélérer PENDANT la fatigue : c\'est la réalité des relances post-obstacle. Genouillère si la moindre sensation au genou.'
                         },
                         5: {
-                            exercises: [
-                                { name: 'Run extérieur', desc: '20-25 min très facile, terrain plat' },
-                                { name: 'Accélérations', desc: '2-3×20s allure course (récup complète)' },
-                                { name: 'Étirements', desc: '10 min mollets, ischio, fléchisseurs hanches' }
-                            ],
-                            note: 'J-2 race. Dernière vraie séance d\'activation. RPE max 4. Sortie en chaussures de course.'
+                            text: 'S10 (10/09) : tapis 4-6% 25 min Z2 + 3×30s · S11 (17/09, J-2) : run 20 min très facile + 2-3×20s + étirements 10 min',
+                            note: 'J-2 Jablines : dernière activation, RPE max 4.'
+                        },
+                        6: {
+                            text: '24/09 : run 30-40 min Z1-Z2 — TEST des sensations post-Super (1er point GO/NO-GO Beast : genou, jambes, énergie) · 01/10 (J-2) : run 20 min facile + 2×20s, préparation du sac Beast',
+                            note: 'Le run du 24/09 est un diagnostic, pas un entraînement : noter précisément les sensations.'
                         }
                     }
                 },
@@ -998,45 +1005,47 @@
                     phases: {
                         1: {
                             exercises: [
-                                { name: 'Mobilité complète', desc: '20 min : hanches, dos, épaules, chevilles' },
-                                { name: 'Étirements passifs', desc: '10 min focus chaîne postérieure' }
+                                { name: 'Split Squat', desc: '3×8/jambe @ 10 kg (4s descente)' },
+                                { name: 'Tirage horizontal', desc: '3×8 @ 35 kg (poulie)' },
+                                { name: 'DB Overhead Press', desc: '3×8 @ 2×7 kg' },
+                                { name: 'Hercules Hoist', desc: '3×8 @ 40 kg' }
                             ],
-                            note: 'Pas de force cette semaine. Récupération profonde.'
+                            note: 'Force légère de reprise, RPE 6 max. Rien de lourd au-dessus de la tête (trapèzes).'
                         },
                         2: {
                             exercises: [
-                                { name: 'Split Squat', desc: '3×8/jambe @ 10 kg en main (4s descente excentrique)' },
-                                { name: 'Inverted Row / Tirage horizontal', desc: '3×8 @ 35-40 kg (poulie)' },
-                                { name: 'DB Overhead Press', desc: '3×8 @ 2×7-7,5 kg' },
-                                { name: 'DB Thruster', desc: '3×8 @ KB 12-14 kg (flexion contrôlée 60°)' },
-                                { name: 'Hercules Hoist simulation', desc: '3×8 @ 40-42,5 kg (rope pull câble lourd)' }
+                                { name: 'Split Squat', desc: '4×10/jambe @ 12 kg' },
+                                { name: 'Tirage horizontal', desc: '4×8 @ 40-45 kg — amplitude complète STRICTE (poignée au thorax)' },
+                                { name: 'DB Push Press', desc: '3×8 @ 2×10 kg' },
+                                { name: 'DB Thruster', desc: '4×10 @ KB 16 kg' },
+                                { name: 'Hercules Hoist', desc: '4×10 @ 49 kg' },
+                                { name: 'Rappel grip', desc: 'Repeaters dead hang 7s/3s ×6, 2 tours en fin de séance' }
                             ],
-                            note: 'Reprise force progressive. Excentrique lent sur split squat pour protéger le genou. Charges en bas de fourchette cette semaine (reprise post-virus).'
+                            note: '2e stimulus grip de la semaine, court et non épuisant.'
                         },
                         3: {
                             exercises: [
-                                { name: 'Split Squat', desc: '4×10/jambe @ 10-12 kg en main' },
-                                { name: 'Inverted Row / Tirage horizontal', desc: '4×8 @ 40-45 kg (poulie)' },
-                                { name: 'DB Push Press', desc: '3×8 @ 2×8-10 kg' },
-                                { name: 'DB Thruster', desc: '4×10 @ KB 14-16 kg' },
-                                { name: 'Hercules Hoist', desc: '4×10 @ 42,5-45 kg' },
-                                { name: 'Multi-Rig simulation', desc: '3 séries : 5 KB swings 18-20 kg + 3 tractions négatives (5s) + 5m suspension déplacée' }
+                                { name: 'Circuit PdC', desc: '35-40 min : split squats tempo, pompes (variantes), dips sur banc, hip hinge à vide, gainage complet' }
                             ],
-                            note: 'Travail Multi-Rig en post-fatigue cardio. Focus transitions horizontales.'
+                            note: 'Mode nomade. 3-4 tours, RPE 6-7. La force se maintient très bien 2 semaines avec du poids du corps bien exécuté.'
                         },
                         4: {
                             exercises: [
-                                { name: 'Split Squat', desc: '3×8/jambe @ 10 kg en main (4s descente excentrique)' },
-                                { name: 'Inverted Row / Tirage horizontal', desc: '3×8 @ 35-40 kg (poulie)' },
-                                { name: 'DB Overhead Press', desc: '3×8 @ 2×7 kg' },
-                                { name: 'DB Thruster', desc: '3×8 @ KB 12-14 kg (flexion contrôlée 60°)' },
-                                { name: 'Hercules Hoist simulation', desc: '3×8 @ 40 kg (rope pull câble)' }
+                                { name: 'Tirage horizontal', desc: '4×8 @ 45-47 kg strict' },
+                                { name: 'Hercules Hoist', desc: '4×10 @ 52-55 kg' },
+                                { name: 'DB Push Press', desc: '3×8 @ 2×10-12 kg' },
+                                { name: 'Multi-Rig simulation', desc: '3 séries : 5 KB swings 20 kg + 3 tractions négatives + 5m suspension déplacée' },
+                                { name: 'Split Squat', desc: '4×10/jambe @ 14 kg' }
                             ],
-                            note: 'Reprise force, charges en bas de fourchette (post-Covid). Excentrique lent sur split squat pour protéger le genou. Pas de circuit intense cette semaine.'
+                            note: 'Force lourde + 3e stimulus grip hebdo. Les charges Hercules préparent le hoist Beast (sacs plus lourds qu\'en Sprint).'
                         },
                         5: {
-                            text: '🛌 REPOS COMPLET — voyage Morzine',
-                            note: 'J-1 race. Préparation matos (chaussures, sac, tenue), voyage, retrait dossard, repérage si possible. Hydratation +15%, glucides complexes le soir, pas d\'alcool, coucher tôt.'
+                            text: 'S10 (11/09) : force -30% de volume, charges conservées · S11 (18/09, J-1) : 🛌 REPOS — trajet Jablines, matos (chaussures trail, genouillère, magnésie liquide, SaltStick), glucides le soir, coucher tôt',
+                            note: 'J-1 Jablines : tout est prêt la veille, zéro stress le matin de course.'
+                        },
+                        6: {
+                            text: '25/09 : force légère complète (-40%, réactivation) · 02/10 (J-1 Beast) : 🛌 REPOS — trajet Estérel, retrait dossard, matos complet (vest 1,5L, gels/barres, 6 SaltStick, genouillère, chaussettes anti-ampoules, magnésie), pasta party, coucher tôt',
+                            note: 'Le sac Beast se prépare avec la checklist du guide — rien de nouveau le jour J.'
                         }
                     }
                 },
@@ -1047,24 +1056,28 @@
                     color: '#1abc9c',
                     phases: {
                         1: {
-                            text: 'Marche 45 min Z1 (récupération active)',
-                            note: 'Pas de course cette semaine. Marche plate.'
+                            text: '40 min Z2 plat souple, allure conversationnelle',
+                            note: 'Reprise course en douceur, terrain plat. Écouter l\'ischio gauche.'
                         },
                         2: {
-                            text: '40-50 min Z2 — trail si possible (trail technique encore léger), sinon route ou tapis incliné 4-6%',
-                            note: 'Reprise course Z2. Allure conversationnelle. Ne pas dépasser Z2. Si retour de virus/fatigue, raccourcir à 30 min. Pas d\'accélération cette semaine.'
+                            text: 'Sortie longue progressive : S2 (18/07) 60-70 min · S3 (25/07) 75-90 min + D+ 250m · S4 (01/08) 90-105 min + D+ 300m',
+                            note: 'Trail dès que possible. Descentes en pas courts, cadence haute — comme à Morzine. 🌡️ Départ avant 9h par forte chaleur, hydratation dès 60 min.'
                         },
                         3: {
-                            text: '50-60 min Z2 + 2 accélérations Z3 30s — TRAIL recommandé (préparation Morzine)',
-                            note: 'Sortie longue. Trail avec dénivelé léger pour préparer le terrain Morzine. Si pas de trail dispo, tapis incliné 6%.'
+                            text: 'S5 (08/08) : 75-90 min vallonné · S6 (15/08) : 1h30-1h45 course/marche mixte',
+                            note: 'LA séance non négociable des vacances. Bord de mer : dunes et escaliers = D+ gratuit. Marche rapide en côte = spécifique Beast.'
                         },
                         4: {
-                            text: '40 min Z2 — trail léger si possible (préparation terrain Morzine), sinon route ou tapis incliné 4-6%',
-                            note: 'Sortie Z2 conversationnelle. Dénivelé léger pour réhabituer le genou aux descentes. Au plus 1-2 accélérations courtes si tout va bien — sinon zéro. 🌡️ Canicule : si pic >35°C, basculer sur tapis incliné en salle climatisée ou décaler avant 8h. Sinon raccourcir et hydrater +++.'
+                            text: 'Sorties longues Beast : S7 (22/08) 2h-2h15 D+ 400-500m + test nutrition n°1 · S8 (29/08) 2h30 D+ 500-600m, vest complète · S9 (05/09) 2h45-3h D+ 600m — RÉPÉTITION GÉNÉRALE',
+                            note: 'Nutrition : 40-60g glucides/h dès 45 min, 500-750 ml/h, 1 SaltStick/45 min après 1h. Z2 strict, marche assumée en côte, genouillère. Tout le matériel Beast se teste ici, rien de nouveau le jour J.'
                         },
                         5: {
-                            text: '🏁 SPARTAN SPRINT — Morzine',
-                            note: 'Jour J ! 5 km, ~20 obstacles. Échauffement progressif 15 min + spécifique (genou, grip). Hydratation +sodium dès le réveil. Vu la reprise post-Covid : pars prudent, accélère seulement si les sensations sont bonnes. Bonne course, Spartan !'
+                            text: 'S10 (12/09) : 75-90 min Z2 D+ léger — dernière sortie longue · S11 (19/09) : 🏁 SUPER JABLINES',
+                            note: 'Jour J Jablines : terrain plat et roulant. Km 1-3 à 70-75% FCmax (~130-138), puis 78-82% (~145-152). Marche 30s + magnésie avant chaque obstacle de suspension. Objectifs : (1) ≥85% obstacles, (2) 1ère Rope Climb — verrouillage J-hook, monter aux jambes, (3) chrono <2h30. Bonne course, Spartan !'
+                        },
+                        6: {
+                            text: '26/09 : 60-75 min Z2 très facile OU repos si fatigue résiduelle · 03/10 : 🏁 BEAST ESTÉREL',
+                            note: 'Jour J Beast (21 km, 30+ obstacles, terrain cassant, ~4h30-5h30) : Z2 strict les 3 premières heures (FC ≤140-145), marche TOUTES les côtes dès le départ, pas courts dans chaque descente + genouillère, nutrition dès 45 min sans attendre la faim, gel caféiné km 15. Pénalités = phases de récupération, à accepter froidement. Objectif unique : finir proprement. C\'est l\'objectif de la saison — patience et lucidité. Bonne course, Spartan !'
                         }
                     }
                 },
@@ -1075,29 +1088,28 @@
                     color: '#f0a500',
                     phases: {
                         1: {
-                            text: 'Repos OU Hyrox externe TRÈS facile selon ressenti',
-                            note: 'Recovery week. Si fatigue, repos complet. Si bonnes sensations, Hyrox light.'
+                            text: 'Hyrox léger RPE 5-6 OU repos complet selon ressenti',
+                            note: 'J+8 course. Si le corps dit repos, c\'est repos — la semaine 2 attaque le vrai travail.'
                         },
                         2: {
-                            exercises: [
-                                { name: 'Échauffement', desc: '15 min vélo/elliptique + mobilité épaules/dos' },
-                                { name: 'Bloc 1 - Grip (4 tours, repos 90s)', desc: 'Dead hang 30s + Farmer Carry 40m @ 2×22,5-25 kg + Towel Hang 15-20s' },
-                                { name: 'Bloc 2 - Technique obstacles (4 tours, repos 60s)', desc: 'Rope Pull câble 10 reps @ 22,5-25 kg (Atlas/Hercules) + Tirage horizontal 10 reps @ 40-45 kg (Multi-Rig) + Step-ups box haut 8/jambe @ 2×8-10 kg' },
-                                { name: 'Finisher cardio modéré', desc: '15 min vélo Z2 avec 3×30s plus rapide (récup complète)' }
-                            ],
-                            note: '⚠️ Cette semaine (24/05) : remplacement Hyrox car pas d\'accès au club. Séance OCR-spécifique ciblée sur les bêtes noires Carcassonne (Atlas/Rope/Multi-Rig). RPE max 6. Semaine prochaine (31/05) : reprise Hyrox externe normale.'
+                            text: 'Séance Hyrox externe — 1h RPE 7 + rappel grip court en fin de séance (dead hang cumulé 60-90s)',
+                            note: '3e stimulus grip hebdomadaire, volontairement léger. Pousser les ateliers portés pendant l\'Hyrox.'
                         },
                         3: {
-                            text: 'Séance Hyrox externe — 1h + sortie trail technique 30-45 min si possible',
-                            note: 'Double session si forme et terrain disponibles. Trail technique pour acclimater le genou aux descentes (privilégier descentes contrôlées).'
+                            text: 'Rando 1h30-2h (dénivelé si possible) OU Hyrox si un club est accessible',
+                            note: 'Volume « caché » spécifique Beast : du temps debout sur terrain varié. En famille, ça compte aussi.'
                         },
                         4: {
-                            text: 'Séance modérée RPE 6 max : Hyrox léger OU répétition générale contrôlée (3-4 km + quelques obstacles en gestion)',
-                            note: 'PAS de simulation à intensité course (post-Covid). Dernier vrai marqueur avant de décider pour Morzine : note tes sensations (souffle, FC, jambes, genou). Si fatigue, repos complet. 🌡️ Canicule : en salle climatisée de préférence. Chaleur + fatigue = repos plutôt que forcer ; la chaleur fausse le marqueur (FC haute = normal, ne pas surinterpréter).'
+                            text: 'Hyrox externe 1h RPE 7-8 + finisher OCR : 3×(farmer lourd 40m + 10 tractions négatives/rows + 15 burpees) · Dim 06/09 à la place : SIMULATION course — 8-10 km trail avec arrêt atelier toutes les 10 min (burpees, portés, suspensions si barres)',
+                            note: 'Obstacles sous fatigue cardiaque = la réalité de la course. La simulation du 06/09 est la répétition générale format Super.'
                         },
                         5: {
-                            text: 'Récupération active : marche légère 30 min + mobilité + étirements',
-                            note: 'J+1 Morzine. Récupération douce, aucune intensité. Fais le bilan de course (obstacles réussis/ratés, genou, souffle) pour caler la prépa Jablines (19 sept).'
+                            text: 'S10 (13/09) : Hyrox léger RPE 5-6 — dernière vraie stimulation avant Jablines',
+                            note: 'Le dimanche suivant (20/09) bascule en Phase 6 : J+1 Super.'
+                        },
+                        6: {
+                            text: '20/09 : J+1 Super — marche 30 min + bilan de course (obstacles, genou, chrono) · 27/09 : marche 45 min ou Hyrox très léger + ✅ GO/NO-GO Beast · 04/10 : J+1 Beast — récupération (sauna + froid + Normatec) et bilan de saison 🎉',
+                            note: 'GO/NO-GO du 27/09 : trois voyants — genou, dos, fatigue post-Jablines. 2 voyants orange ou plus → mode finisher ultra-conservateur ou renoncement sans regret : avec Morzine et Jablines, la saison est déjà réussie.'
                         }
                     }
                 }
@@ -1114,7 +1126,9 @@
             const phases = trainingData.phases;
 
             for (let i = 0; i < phases.length; i++) {
-                if (today >= phases[i].startDate && today <= phases[i].endDate) {
+                const end = new Date(phases[i].endDate);
+                end.setHours(23, 59, 59);
+                if (today >= phases[i].startDate && today <= end) {
                     return i + 1;
                 }
             }
@@ -1122,10 +1136,10 @@
         }
 
         function getDaysUntilRace() {
-            const raceDate = new Date(2026, 6, 4);
+            const races = [new Date(2026, 8, 19), new Date(2026, 9, 3)]; // Jablines, Estérel
             const today = new Date();
-            const diff = raceDate - today;
-            return Math.ceil(diff / (1000 * 60 * 60 * 24));
+            const next = races.find(r => r - today >= 0) || races[races.length - 1];
+            return Math.ceil((next - today) / (1000 * 60 * 60 * 24));
         }
 
         function getTodayDayIndex() {
