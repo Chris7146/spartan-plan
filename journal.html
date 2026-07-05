@@ -1,0 +1,860 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <meta name="apple-mobile-web-app-title" content="Spartan Journal">
+    <meta name="theme-color" content="#0e1412">
+    <title>Spartan Journal</title>
+
+    <style>
+        :root {
+            --bg-primary: #0e1412;
+            --bg-secondary: #1a2420;
+            --bg-tertiary: #243530;
+            --accent: #e63946;
+            --accent-secondary: #22c980;
+            --accent-warn: #f0a500;
+            --text-primary: #e8ede9;
+            --text-secondary: #b0b9b3;
+            --text-muted: #6b7c72;
+            --border: rgba(255,255,255,0.08);
+            --border-light: rgba(255,255,255,0.12);
+            --safe-area-bottom: max(env(safe-area-inset-bottom), 16px);
+
+            --color-recovery: #22c980;
+            --color-hyrox: #f0a500;
+            --color-grip: #e63946;
+            --color-cardio: #4a9eff;
+            --color-force: #9b59b6;
+            --color-cardio-z2: #1abc9c;
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
+
+        body {
+            font-family: -apple-system, 'SF Pro Display', BlinkMacSystemFont, sans-serif;
+            background: var(--bg-primary);
+            color: var(--text-primary);
+            overflow: hidden;
+            height: 100vh;
+            width: 100vw;
+        }
+
+        .app { display: flex; flex-direction: column; height: 100vh; width: 100%; }
+
+        /* Header */
+        .header {
+            background: linear-gradient(135deg, rgba(230,57,70,0.1) 0%, rgba(34,201,128,0.05) 100%);
+            padding: max(env(safe-area-inset-top), 12px) 16px 12px;
+            border-bottom: 1px solid var(--border);
+            backdrop-filter: blur(20px);
+            z-index: 10;
+        }
+
+        .header-row { display: flex; align-items: center; justify-content: space-between; }
+        .header-title { font-size: 24px; font-weight: 700; letter-spacing: -0.5px; }
+        .header-subtitle { font-size: 13px; color: var(--text-secondary); margin-top: 2px; }
+        .header-link {
+            font-size: 13px; color: var(--accent); text-decoration: none;
+            padding: 6px 12px; border-radius: 16px;
+            background: rgba(230,57,70,0.15); border: 1px solid rgba(230,57,70,0.3);
+            font-weight: 600;
+        }
+
+        /* Week Nav */
+        .week-nav {
+            display: flex; gap: 6px; overflow-x: auto; padding: 10px 16px;
+            border-bottom: 1px solid var(--border);
+            -webkit-overflow-scrolling: touch; scroll-behavior: smooth;
+        }
+        .week-nav::-webkit-scrollbar { height: 0; }
+
+        .week-pill {
+            padding: 7px 14px; border-radius: 18px; background: var(--bg-secondary);
+            border: 1px solid var(--border); color: var(--text-secondary);
+            cursor: pointer; white-space: nowrap; font-size: 12px; font-weight: 600;
+            transition: all 0.2s; flex-shrink: 0; touch-action: manipulation;
+        }
+        .week-pill:active { transform: scale(0.97); }
+        .week-pill.active { background: var(--accent); color: var(--bg-primary); border-color: var(--accent); }
+        .week-pill .week-progress {
+            font-size: 10px; opacity: 0.8; margin-left: 4px;
+        }
+
+        /* Content */
+        .content {
+            flex: 1; overflow-y: auto; -webkit-overflow-scrolling: touch;
+            padding: 16px 16px calc(16px + var(--safe-area-bottom));
+        }
+
+        /* Day Card */
+        .day-card {
+            background: var(--bg-secondary); border: 1px solid var(--border);
+            border-radius: 14px; margin-bottom: 14px; overflow: hidden;
+            transition: all 0.3s;
+        }
+        .day-card.today { border-color: var(--accent); box-shadow: 0 0 20px rgba(230,57,70,0.15); }
+
+        .day-card-header {
+            padding: 14px 16px; display: flex; align-items: center; gap: 10px;
+            cursor: pointer; touch-action: manipulation; min-height: 52px;
+        }
+        .day-card-header:active { background: rgba(255,255,255,0.02); }
+
+        .day-date { font-size: 13px; font-weight: 700; color: var(--text-primary); min-width: 42px; }
+        .day-name { font-size: 13px; color: var(--text-secondary); font-weight: 500; flex: 1; }
+        .day-type-dot {
+            width: 10px; height: 10px; border-radius: 50%; flex-shrink: 0;
+        }
+
+        .day-status-icon { font-size: 18px; flex-shrink: 0; }
+
+        .day-card-body {
+            display: none; padding: 0 16px 16px;
+            border-top: 1px solid var(--border);
+            animation: slideDown 0.25s ease;
+        }
+        .day-card.open .day-card-body { display: block; }
+
+        @keyframes slideDown {
+            from { opacity: 0; transform: translateY(-4px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        /* Planned workout */
+        .planned-label {
+            font-size: 11px; font-weight: 700; text-transform: uppercase;
+            letter-spacing: 0.5px; color: var(--text-muted); margin: 14px 0 8px;
+        }
+        .planned-workout {
+            background: var(--bg-tertiary); border-radius: 10px; padding: 12px;
+            font-size: 13px; line-height: 1.6; color: var(--text-secondary);
+        }
+        .planned-workout strong { color: var(--text-primary); }
+
+        /* Status buttons */
+        .status-group { display: flex; gap: 8px; margin-top: 14px; flex-wrap: wrap; }
+
+        .status-btn {
+            flex: 1; min-width: 0; padding: 10px 6px; border-radius: 10px;
+            border: 1px solid var(--border); background: var(--bg-tertiary);
+            color: var(--text-secondary); font-size: 12px; font-weight: 600;
+            cursor: pointer; transition: all 0.2s; text-align: center;
+            touch-action: manipulation;
+        }
+        .status-btn:active { transform: scale(0.97); }
+        .status-btn .status-emoji { font-size: 18px; display: block; margin-bottom: 4px; }
+
+        .status-btn.selected-done {
+            background: rgba(34,201,128,0.2); border-color: var(--accent-secondary);
+            color: var(--accent-secondary);
+        }
+        .status-btn.selected-replaced {
+            background: rgba(240,165,0,0.2); border-color: var(--accent-warn);
+            color: var(--accent-warn);
+        }
+        .status-btn.selected-skipped {
+            background: rgba(230,57,70,0.2); border-color: var(--accent);
+            color: var(--accent);
+        }
+
+        /* Replacement input */
+        .replacement-section {
+            display: none; margin-top: 12px;
+            animation: slideDown 0.2s ease;
+        }
+        .replacement-section.visible { display: block; }
+
+        /* Hyrox detail section */
+        .hyrox-detail-section {
+            margin-top: 12px; animation: slideDown 0.2s ease;
+        }
+        .hyrox-detail-section .hyrox-badge {
+            display: inline-flex; align-items: center; gap: 6px;
+            font-size: 11px; font-weight: 700; text-transform: uppercase;
+            letter-spacing: 0.5px; color: #f0a500;
+            background: rgba(240,165,0,0.12); padding: 4px 10px;
+            border-radius: 8px; margin-bottom: 8px;
+        }
+        .hyrox-input {
+            width: 100%; padding: 10px 12px; border-radius: 10px;
+            border: 1px solid rgba(240,165,0,0.25); background: var(--bg-tertiary);
+            color: var(--text-primary); font-size: 14px; font-family: inherit;
+            resize: vertical; min-height: 90px; outline: none;
+            transition: border-color 0.2s;
+        }
+        .hyrox-input:focus { border-color: #f0a500; }
+        .hyrox-input::placeholder { color: var(--text-muted); }
+
+        .input-label {
+            font-size: 11px; font-weight: 700; text-transform: uppercase;
+            letter-spacing: 0.5px; color: var(--text-muted); margin-bottom: 6px;
+        }
+
+        .text-input {
+            width: 100%; padding: 10px 12px; border-radius: 10px;
+            border: 1px solid var(--border-light); background: var(--bg-tertiary);
+            color: var(--text-primary); font-size: 14px; font-family: inherit;
+            resize: vertical; min-height: 44px; outline: none;
+            transition: border-color 0.2s;
+        }
+        .text-input:focus { border-color: var(--accent); }
+        .text-input::placeholder { color: var(--text-muted); }
+
+        /* Comments */
+        .comment-section { margin-top: 12px; }
+        .comment-input {
+            width: 100%; padding: 10px 12px; border-radius: 10px;
+            border: 1px solid var(--border-light); background: var(--bg-tertiary);
+            color: var(--text-primary); font-size: 14px; font-family: inherit;
+            resize: vertical; min-height: 70px; outline: none;
+            transition: border-color 0.2s;
+        }
+        .comment-input:focus { border-color: var(--accent-secondary); }
+        .comment-input::placeholder { color: var(--text-muted); }
+
+        /* Tags */
+        .tag-row { display: flex; gap: 6px; flex-wrap: wrap; margin-top: 8px; }
+        .tag {
+            padding: 4px 10px; border-radius: 12px; font-size: 11px; font-weight: 600;
+            cursor: pointer; transition: all 0.2s; touch-action: manipulation;
+            border: 1px solid var(--border);
+        }
+        .tag:active { transform: scale(0.95); }
+        .tag.active { border-color: currentColor; }
+        .tag-fatigue { color: var(--accent); background: rgba(230,57,70,0.1); }
+        .tag-fatigue.active { background: rgba(230,57,70,0.25); }
+        .tag-blessure { color: #ff6b6b; background: rgba(255,107,107,0.1); }
+        .tag-blessure.active { background: rgba(255,107,107,0.25); }
+        .tag-top { color: var(--accent-secondary); background: rgba(34,201,128,0.1); }
+        .tag-top.active { background: rgba(34,201,128,0.25); }
+        .tag-sommeil { color: #4a9eff; background: rgba(74,158,255,0.1); }
+        .tag-sommeil.active { background: rgba(74,158,255,0.25); }
+        .tag-stress { color: #9b59b6; background: rgba(155,89,182,0.1); }
+        .tag-stress.active { background: rgba(155,89,182,0.25); }
+
+        /* RPE Slider */
+        .rpe-section { margin-top: 14px; }
+        .rpe-row { display: flex; align-items: center; gap: 10px; margin-top: 6px; }
+        .rpe-slider {
+            flex: 1; -webkit-appearance: none; appearance: none;
+            height: 6px; border-radius: 3px;
+            background: linear-gradient(to right, var(--accent-secondary), var(--accent-warn), var(--accent));
+            outline: none;
+        }
+        .rpe-slider::-webkit-slider-thumb {
+            -webkit-appearance: none; appearance: none;
+            width: 24px; height: 24px; border-radius: 50%;
+            background: var(--text-primary); cursor: pointer;
+            border: 2px solid var(--bg-primary);
+            box-shadow: 0 2px 8px rgba(0,0,0,0.3);
+        }
+        .rpe-value {
+            font-size: 20px; font-weight: 700; min-width: 36px; text-align: center;
+            color: var(--accent-secondary);
+        }
+        .rpe-label { font-size: 11px; color: var(--text-muted); }
+
+        /* Stats summary */
+        .stats-bar {
+            display: flex; gap: 8px; padding: 12px 16px;
+            border-bottom: 1px solid var(--border);
+            overflow-x: auto; -webkit-overflow-scrolling: touch;
+        }
+        .stat-chip {
+            padding: 6px 12px; border-radius: 10px; background: var(--bg-secondary);
+            border: 1px solid var(--border); font-size: 12px; font-weight: 600;
+            white-space: nowrap; flex-shrink: 0;
+        }
+        .stat-chip .stat-num { color: var(--accent); }
+        .stat-chip .stat-label { color: var(--text-secondary); }
+
+        /* Export button */
+        .export-btn {
+            display: block; width: 100%; padding: 14px; margin-top: 16px;
+            border-radius: 12px; border: 1px solid var(--border);
+            background: var(--bg-secondary); color: var(--text-secondary);
+            font-size: 14px; font-weight: 600; cursor: pointer;
+            text-align: center; transition: all 0.2s;
+        }
+        .export-btn:active { background: var(--bg-tertiary); }
+
+        /* Back to plan link */
+        .back-link {
+            display: inline-flex; align-items: center; gap: 6px;
+            color: var(--accent); text-decoration: none; font-size: 13px; font-weight: 600;
+        }
+
+        /* Responsive */
+        @media (max-width: 360px) {
+            .header-title { font-size: 20px; }
+            .status-btn { padding: 8px 4px; font-size: 11px; }
+        }
+    </style>
+</head>
+<body>
+<div class="app">
+    <!-- Header -->
+    <div class="header">
+        <div class="header-row">
+            <div>
+                <div class="header-title">Spartan Journal</div>
+                <div class="header-subtitle">Suivi d'entraînement — Course le 10 mai 2026</div>
+            </div>
+            <a href="index.html" class="header-link">Plan</a>
+        </div>
+    </div>
+
+    <!-- Week Navigation -->
+    <div class="week-nav" id="weekNav"></div>
+
+    <!-- Stats -->
+    <div class="stats-bar" id="statsBar"></div>
+
+    <!-- Content -->
+    <div class="content" id="content"></div>
+</div>
+
+<script>
+// ===== Training Data (mirrored from plan) =====
+const trainingPlan = {
+    phases: [
+        { name: 'Phase 1: Adaptation', start: '2026-03-30', end: '2026-04-12', num: 1 },
+        { name: 'Phase 2: Construction', start: '2026-04-13', end: '2026-04-26', num: 2 },
+        { name: 'Phase 3: Peak', start: '2026-04-27', end: '2026-05-03', num: 3 },
+        { name: 'Phase 4: Taper Carcassonne', start: '2026-05-04', end: '2026-05-10', num: 4 },
+        { name: 'Phase 5: Récupération', start: '2026-05-11', end: '2026-05-17', num: 5 },
+        { name: 'Phase 6: Reconstruction', start: '2026-05-18', end: '2026-05-31', num: 6 },
+        { name: 'Phase 7: Construction spécifique', start: '2026-06-01', end: '2026-06-14', num: 7 },
+        { name: 'Phase 8: Reprise post-Covid', start: '2026-06-15', end: '2026-06-28', num: 8 },
+        { name: 'Phase 9: Taper Morzine → 🏁 Sprint (sam 4/07)', start: '2026-06-29', end: '2026-07-05', num: 9 },
+        { name: 'Phase 10: Récupération post-Morzine', start: '2026-07-06', end: '2026-07-12', num: 10 },
+        { name: 'Phase 11: Rebuild + Grip I', start: '2026-07-13', end: '2026-08-02', num: 11 },
+        { name: 'Phase 12: Été nomade (vacances)', start: '2026-08-03', end: '2026-08-16', num: 12 },
+        { name: 'Phase 13: Spécifique Beast + Grip II', start: '2026-08-17', end: '2026-09-06', num: 13 },
+        { name: 'Phase 14: Affûtage → 🏁 Super Jablines (sam 19/09)', start: '2026-09-07', end: '2026-09-19', num: 14 },
+        { name: 'Phase 15: Pont → 🏁 Beast Estérel (sam 3/10)', start: '2026-09-20', end: '2026-10-04', num: 15 }
+    ],
+    days: {
+        1: { // Lundi
+            label: 'Core McGill + Récupération', type: 'recovery', color: '#22c980', icon: '🛡️',
+            phases: {
+                1: 'McGill Curl-Up 3×8 (10s hold) · Side Plank 3×15s/côté · Bird-Dog 3×6/côté · Cat-Cow 2×10\nZ1 optionnel 15-20min vélo/marche',
+                2: 'McGill Curl-Up 3×10 (10s hold) · Side Plank 3×25s/côté · Bird-Dog 3×8/côté · Pallof Press 3×8/côté · Cat-Cow 2×10',
+                3: 'McGill Curl-Up 3×10 (12s hold) · Side Plank 3×30s/côté · Bird-Dog 3×10/côté · Pallof Press 3×10/côté',
+                4: 'McGill Curl-Up 2×8 · Side Plank 2×20s/côté · Bird-Dog 2×6/côté · Vélo/marche Z1 20-30 min (optionnel)\nJ-6 race. Mobilité hanches/dos en priorité. Repos complet OK si fatigue.',
+                5: 'McGill Curl-Up 2×6 (10s) · Side Plank 2×15s/c · Bird-Dog 2×6/c · Cat-Cow 2×10 · Vélo Z1 20-30 min (optionnel)\nJ+1 post-Carcassonne. Très basse intensité. Repos OK si fatigue.',
+                6: 'McGill Curl-Up 3×8 (10s) · Side Plank 3×20s/c · Bird-Dog 3×8/c · Pallof Press 3×8/c · Cat-Cow 2×10\nZ1 optionnel 15-20 min en début.',
+                7: 'McGill Curl-Up 3×10 (10s) · Side Plank 3×25s/c · Bird-Dog 3×10/c · Pallof Press 3×10/c · Dead Bug 3×8/c\nStabilité dynamique.',
+                8: 'McGill Curl-Up 2×6 (10s) · Side Plank 2×15s/c · Bird-Dog 2×6/c · Cat-Cow 2×10 · Vélo Z1 20 min très facile (opt.)\nJ1 reprise post-Covid. Très basse intensité. Surveiller FC repos + essoufflement. Repos OK si fatigue.',
+                9: 'McGill Curl-Up 2×8 · Side Plank 2×20s/c · Bird-Dog 2×6/c · Vélo/marche Z1 20-30 min (opt.)\nJ-5 race Morzine (sam 4/07). Mobilité hanches/dos. Repos OK si fatigue.',
+                10: 'McGill Curl-Up 2×8 (10s) · Side Plank 2×20s/c · Bird-Dog 2×6/c · Cat-Cow 2×10 · Marche/vélo Z1 20-30 min (opt.)\nJ+2 post-Morzine, semaine de décharge. Trapèzes sensibles (chaîne) : rien au-dessus de la tête.',
+                11: 'McGill Curl-Up 3×10 (10s) · Side Plank 3×30s/c · Bird-Dog 3×10/c · Pallof Press 3×10/c · Dead Bug 3×8/c\nMcGill complet + Z1 optionnel 15-20 min. Le dos est silencieux depuis avril — on ne relâche pas.',
+                12: 'McGill au sol : curl-up 3×10 + side plank 3×25s + bird-dog 3×10 (aucun matériel) · Marche 30 min\nMode nomade : le Big 3 se fait partout. Non négociable même en vacances.',
+                13: 'McGill Curl-Up 3×10 (12s) · Side Plank 3×30s/c · Bird-Dog 3×10/c · Pallof Press 3×10/c · Vélo Z1 20 min (opt.)\nBloc le plus chargé : surveiller sommeil, FC repos, envie. Un signal qui dérape = enlever une séance.',
+                14: 'McGill Curl-Up 2×8-10 · Side Plank 2×25s/c · Bird-Dog 2×8/c · Mobilité complète 10 min\nAffûtage : entretien seulement. S11 = semaine de course (Jablines sam 19/09).',
+                15: 'McGill doux : curl-up 2×6 + side plank 2×15s + bird-dog 2×6 · Marche 20-30 min\n21/09 : J+2 Super, tout en douceur. 28/09 : McGill léger + mobilité (J-5 Beast).'
+            }
+        },
+        2: { // Mardi
+            label: 'Hyrox', type: 'hyrox', color: '#f0a500', icon: '⚡',
+            phases: {
+                1: 'Séance Hyrox externe — 1h (mardi soir)',
+                2: 'Séance Hyrox externe — 1h (mardi soir)',
+                3: 'Séance Hyrox externe — 1h (mardi soir)',
+                4: 'Tapis incliné 4% 10 min Z2 (échauffement) · Allure course 4×30s (récup 1\'30 marche) · Farmer Carry 2×30m (2×20kg) · Dead Hang actif 2×20s\nJ-5 race. Pas d\'Hyrox cette semaine. Séance courte 25 min, RPE max 5.',
+                5: 'Marche / vélo Z1 30 min + mobilité complète\nPas d\'Hyrox cette semaine.',
+                6: 'Séance Hyrox externe — 1h\nReprise. Intensité modérée, RPE max 6.',
+                7: 'Séance Hyrox externe — 1h\nIntensité élevée, RPE 7.',
+                8: 'Marche / vélo Z1-Z2 30-40 min + mobilité complète\nPAS d\'Hyrox. 1er test cardio léger post-Covid. RPE max 4. Si essoufflement anormal ou FC qui s\'emballe, écourter. 🌡️ Canicule : tôt le matin ou en salle clim (vélo), pas en plein soleil. Hydratation + sel.',
+                9: 'Tapis 4% 10 min Z2 · 3-4×30s allure (récup 1\'30) · Farmer 2×30m 2x20kg · Dead Hang 2×20s\nJ-4 race. Pas d\'Hyrox. RPE max 5. 🩺 Point de décision Morzine : souffle, FC, énergie ?',
+                10: 'Marche / vélo Z1 30-40 min + mobilité complète\nPas d\'Hyrox cette semaine (J+3 course). Récupération active.',
+                11: 'Séance Hyrox externe — 1h\nRPE 6 la 1re semaine (14/07), puis RPE 7. Pousser les ateliers portés (sled, farmer).',
+                12: 'Run vallonné 40-45 min avec 8×30s en côte OU circuit PdC 30 min (burpees, squats tempo, fentes arrière, pompes, planche)\nMode nomade. Si club Hyrox accessible : séance normale RPE 7.',
+                13: 'Séance Hyrox externe — 1h\nRPE 7-8, phase la plus intense. Si club fermé (été) : run côtes 45 min (10×45s).',
+                14: 'S10 (08/09) : Hyrox modéré RPE 6 · S11 (15/09, J-4) : activation 25 min — tapis 10 min Z2 + 3×30s allure + farmer léger + dead hang 2×20s\nPlus d\'intensité max à partir du 14/09.',
+                15: '22/09 : vélo/marche Z1 30 min (récup Super) · 29/09 (J-4 Beast) : activation 25 min — 10 min Z2 + 3×30s allure + dead hang 2×20s\nEntre les deux courses : léger, garder la fraîcheur.'
+            }
+        },
+        3: { // Mercredi
+            label: 'Grip + Traction', type: 'grip', color: '#e63946', icon: '🏋️',
+            phases: {
+                1: 'Dead Hang actif 6×10s (repos 90s) · Pull-ups assistés 3×5 · Towel Hang 3×10s · Farmer Carry 3×20m · Rope Pull câble 3×8 · Face Pulls 3×12',
+                2: 'Dead Hang actif 4×20-25s · Pull-ups 3×6-8 · Towel Hang 3×15s · Farmer Carry 3×30m (charge++) · Rope Pull câble 3×10 · Face Pulls 3×15',
+                3: 'Dead Hang actif 5×30s · Pull-ups 4×max · Towel Hang 3×20s · Farmer Carry 4×30m (lourd) · Rope Pull câble 4×10 · Face Pulls 3×15',
+                4: 'Marche 30-40 min allure facile · Mobilité dos (cat-cow, ouverture hanches, étirements ischio)\nJ-4 race. Repos actif. Aucune charge. Si dos sensible, supprimer toute activité.',
+                5: 'Marche 30-40 min · Mobilité (cat-cow, hanches, ischio, fléchisseurs hanches)\nRécupération active.',
+                6: 'Dead Hang 4×15s · Pull-ups assistés 3×5 (contre-charge 42,5-47,5 kg) · Towel Hang 3×10-15s · Farmer 2×15m @ 2×20-22,5 kg · Rope Pull câble 3×10 @ 20-22,5 kg · Face Pulls 3×12 @ 12,5-15 kg\nReprise grip, RPE 6 max.',
+                7: 'Dead Hang 5×30s · Pull-ups 4×max (assistés contre-charge 40-42,5 kg) · Towel Hang 3×20s · Farmer 4×25m @ 2×22,5-25 kg · Rope Climb technique 3 essais (J-thread) · Rope Pull 4×10 @ 22,5-25 kg · Face Pulls 3×15 @ 17,5-20 kg\nTravail technique Rope Climb.',
+                8: 'Dead Hang 4×15s · Tractions scapulaires 3×6 (bras tendus) · Tractions négatives pronation 3×3 (descente 5s) · Tirage anneaux 3×8 (corps incliné, facile) · Towel Hang 3×12s · Farmer 2×15m @ 2×20 kg\nReprise grip légère post-Covid. Charges basses, RPE 5 max, jamais à l\'échec. Rope Climb/Multi-Rig reportés après Morzine.',
+                9: 'Marche 30-40 min · Mobilité dos\nJ-3 race. Repos actif, aucune charge. ✅ Décision finale Morzine aujourd\'hui : courir si reprise franchement bonne, sinon viser Jablines.',
+                10: 'Dead Hang actif 3×15s · Tractions scapulaires 3×6 · Towel Hang 3×10s · Farmer 2×15m @ 2×20 kg\nRéactivation très légère, RPE 5 max (trapèzes). Les repeaters démarrent en Phase 11.',
+                11: 'GRIP I — Repeaters dead hang 7s/3s ×6, 3 tours (repos 2-3\') · Tractions assistées 4×5 @ -40 → -35 kg · Négatives 4×3 (5-6s) · Towel Hang 3×20-25s · Déplacement latéral suspendu 2-3× max · Farmer 4×25m @ 2×25 kg · Face Pulls 3×15\nJamais à l\'échec sur négatives/suspensions. S4 (29/07) : test dead hang max, cible 40-45s.',
+                12: 'GRIP nomade — Portique/branche : dead hangs 4×20s + négatives 3×3 + towel hang 3×15s · Sinon : tirage isométrique serviette 3×30s + pinch carry bidons 4×30m · Corde 2-3m si emportée : 10 min J-hook\nRepérer une aire de street workout (monkey bars réels = seul vrai transfert).',
+                13: 'GRIP II — Repeaters 7s/3s ×6, 4-5 tours · Tractions assistées 4×5 @ -30 → -25 kg · Négatives 4×4 (7-8s) · Towel hang asymétrique 3×10-15s/main · Déplacements latéraux suspendus 3×5-8m avec changements de prise · Farmer 4×30-40m @ 2×27,5-30 kg\nStreet workout 1×/quinzaine : monkey bars + corde (J-hook). Magnésie comme en course.',
+                14: 'S10 (09/09) : grip réduit -40% — repeaters 2-3 tours, négatives 3×3, towel 3×15s · S11 (16/09, J-3) : marche 30 min + mobilité, aucune charge\n✅ Objectifs Jablines : ≥85% obstacles + 1ère Rope Climb.',
+                15: '23/09 : réactivation légère — dead hang 3×20s, rows 3×8, towel 3×15s (RPE 5) · 30/09 (J-3 Beast) : marche + mobilité, zéro charge\nAucune séance grip lourde entre les deux courses.'
+            }
+        },
+        4: { // Jeudi
+            label: 'Cardio Spécifique Spartan', type: 'cardio', color: '#4a9eff', icon: '🏃',
+            phases: {
+                1: 'Tapis incliné 4-6% 20min Z2 · Burpees 3×5 (technique) · Step-ups 3×10/jambe · Farmer Carry 2×20m sous fatigue',
+                2: 'Tapis incliné 6% 25min Z2-Z3 · Burpees 3×8 · Step-ups 3×12/jambe (charge légère) · Farmer Carry 3×25m sous fatigue',
+                3: 'Tapis incliné 6-8% 30min avec 3× accélérations Z3-Z4 · Burpees 4×10 · Step-ups 4×12/jambe · Farmer Carry 3×30m sous fatigue',
+                4: 'Run extérieur 25-30 min très facile, terrain plat · Accélérations 2-3×20s allure course (récup complète) · Étirements 10 min (mollets, ischio, fléchisseurs hanches)\nJ-3 race. Dernière vraie séance d\'activation. RPE max 4. Sortie en chaussures de course.',
+                5: 'Vélo Z1 30 min + mobilité hanches/chevilles\nVélo doux ou repos selon ressenti.',
+                6: 'Tapis 4% 20 min Z2 · Burpees 3×5 · Step-ups 3×8/j (PdC) · Step-down lent 2×6/j (5s descente, focus quad gauche) · Farmer 2×15m @ 2×20-22,5 kg\nIntro step-down excentrique pour le genou.',
+                7: 'Tapis 6% 25-30 min Z2-Z3 · Burpees 4×8 · Bulgarian Split Squat 3×8/j @ 2×8-10 kg (4-5s descente, étirement quad long) · Step-down lent 3×8/j (charge 2×5 kg) · Atlas sim Zercher 24 kg 3×30m · Farmer 3×25m @ 2×22,5-25 kg\nBulgarian Split Squat = hypertrophie quad en étirement long (Maeo 2023). Travail Atlas Carry + step-down quad gauche.',
+                8: 'Tapis incliné 4% 25-30 min Z2 (conversationnel) · Burpees 3×5 (technique, planche) · Step-down lent 3×6/j (5s descente, quad gauche) · Farmer 2×20m @ 2×20 kg\n2e test cardio post-Covid. Z2 strict, surveiller souffle + genou. Aucune accélération. 🌡️ Canicule : tapis en salle climatisée (déjà prévu). Hydratation avant/pendant, sel après.',
+                9: 'Run extérieur 20-25 min très facile · 2-3×20s allure course (récup complète) · Étirements 10 min\nJ-2 race. RPE max 4. Chaussures de course.',
+                10: 'Tapis 4% 20-25 min Z2 · Step-down lent 2×6/j (5s descente) · Mobilité 10 min\nReprise douce. ⚠️ Surveiller l\'ischio gauche (signal du 14/06).',
+                11: 'Tapis 6% 30 min Z2-Z3 · Burpees 4×8 · Bulgarian Split Squat 3×8/j @ 12 kg (4-5s descente) · Step-down 3×8/j @ 2×5 kg · Atlas Zercher KB 24 kg 3×30m\nLe bloc excentrique a rendu les descentes de Morzine indolores — on continue.',
+                12: 'Run vallonné 40-50 min, descentes en pas courts · Fentes arrière 3×12/j · Step-downs sur une marche 3×10/j\nMode nomade : le travail genou tient avec un escalier.',
+                13: 'Tapis 6-8% 35-40 min avec 4-5×30-45s Z3-Z4 (redémarrages post-obstacle) · Bulgarian Split Squat 4×8/j @ 12-14 kg · Step-down 3×10/j · Burpees 5×10 sous fatigue\nAccélérer PENDANT la fatigue. Genouillère si sensation genou.',
+                14: 'S10 (10/09) : tapis 4-6% 25 min Z2 + 3×30s · S11 (17/09, J-2) : run 20 min très facile + 2-3×20s + étirements\nJ-2 Jablines : dernière activation, RPE max 4.',
+                15: '24/09 : run 30-40 min Z1-Z2 — TEST sensations post-Super (1er GO/NO-GO Beast : genou, jambes, énergie) · 01/10 (J-2) : run 20 min facile + 2×20s, préparation sac Beast\nLe run du 24/09 est un diagnostic : noter précisément les sensations.'
+            }
+        },
+        5: { // Vendredi
+            label: 'Force Obstacles', type: 'force', color: '#9b59b6', icon: '💪',
+            phases: {
+                1: 'Split Squat 3×10/jambe · Band-assisted Row 3×12 · DB Overhead Press 3×10 · Wall Ball 3×10 · Hercules Hoist simulation 3×8',
+                2: 'Split Squat 3×12/jambe (charge) · Inverted Row 3×10 · DB Overhead Press 3×12 · Wall Ball 3×12 · Hercules Hoist simulation 3×10 · Face Pulls 3×12',
+                3: 'Split Squat 4×12/jambe (charge) · Inverted Row 4×10 · DB Push Press 3×10 · Wall Ball 4×12 · Hercules Hoist 4×10 · Circuit: 3 rounds burpees ×5 + dead hang + farmer carry 20m',
+                4: '🛌 REPOS COMPLET\nJ-2 race. Préparation matos (chaussures, sac, tenue), hydratation +15%, repas riche en glucides complexes le soir. Pas d\'alcool, coucher tôt.',
+                5: 'Mobilité complète 20 min · Étirements passifs 10 min focus chaîne postérieure\nPas de force cette semaine.',
+                6: 'Split Squat 3×8/j @ 10 kg (4s excentrique) · Tirage horizontal 3×8 @ 35-40 kg · DB OH Press 3×8 @ 2×7-7,5 kg · DB Thruster 3×8 @ KB 12-14 kg (60°) · Hercules Hoist sim 3×8 @ 40-42,5 kg\nReprise force progressive.',
+                7: 'Split Squat 4×10/j @ 10-12 kg · Tirage horizontal 4×8 @ 40-45 kg · DB Push Press 3×8 @ 2×8-10 kg · DB Thruster 4×10 @ KB 14-16 kg · Hercules Hoist 4×10 @ 42,5-45 kg · Multi-Rig sim 3×(5 KB swings 18-20 kg + 3 pull-ups + 1 muscle-up assisté)\nMulti-Rig en post-fatigue.',
+                8: 'Split Squat 3×8/j @ 10 kg (4s excentrique) · Tirage horizontal 3×8 @ 35-40 kg · DB OH Press 3×8 @ 2×7 kg · DB Thruster 3×8 @ KB 12-14 kg (60°) · Hercules Hoist sim 3×8 @ 40 kg\nReprise force, charges basses (post-Covid). Excentrique lent split squat (genou). Pas de circuit intense.',
+                9: '🛌 REPOS COMPLET — voyage Morzine\nJ-1 race. Préparation matos, retrait dossard, repérage. Hydratation +15%, glucides le soir, pas d\'alcool, coucher tôt.',
+                10: 'Split Squat 3×8/j @ 10 kg (4s descente) · Tirage horizontal 3×8 @ 35 kg · DB OH Press 3×8 @ 2×7 kg · Hercules Hoist 3×8 @ 40 kg\nForce légère de reprise, RPE 6 max. Rien de lourd au-dessus de la tête (trapèzes).',
+                11: 'Split Squat 4×10/j @ 12 kg · Tirage horizontal 4×8 @ 40-45 kg (amplitude complète STRICTE) · DB Push Press 3×8 @ 2×10 kg · Thruster 4×10 @ KB 16 kg · Hercules Hoist 4×10 @ 49 kg · Rappel grip : repeaters 7s/3s ×6, 2 tours\n2e stimulus grip de la semaine, court.',
+                12: 'Circuit PdC 35-40 min : split squats tempo, pompes (variantes), dips banc, hip hinge à vide, gainage complet\nMode nomade, 3-4 tours, RPE 6-7.',
+                13: 'Tirage horizontal 4×8 @ 45-47 kg strict · Hercules Hoist 4×10 @ 52-55 kg · DB Push Press 3×8 @ 2×10-12 kg · Multi-Rig sim : 3×(5 KB swings 20 kg + 3 négatives + 5m suspension déplacée) · Split Squat 4×10/j @ 14 kg\nForce lourde + 3e stimulus grip hebdo.',
+                14: 'S10 (11/09) : force -30% volume, charges conservées · S11 (18/09, J-1) : 🛌 REPOS — trajet Jablines, matos (trail, genouillère, magnésie liquide, SaltStick), glucides le soir, coucher tôt\nTout est prêt la veille, zéro stress le jour J.',
+                15: '25/09 : force légère complète (-40%, réactivation) · 02/10 (J-1 Beast) : 🛌 REPOS — trajet Estérel, dossard, matos complet (vest 1,5L, gels/barres, 6 SaltStick, genouillère, chaussettes anti-ampoules, magnésie), pasta, coucher tôt\nRien de nouveau le jour J.'
+            }
+        },
+        6: { // Samedi
+            label: 'Cardio Z2', type: 'cardio_z2', color: '#1abc9c', icon: '🏃‍♂️',
+            phases: {
+                1: '30min Z2 strict — trail, route ou tapis incliné 4-6%\nAllure conversationnelle. Ne pas dépasser Z2.',
+                2: '40min Z2 + accélérations Z3 optionnelles en fin (2×30s)',
+                3: '45min Z2 + 4 accélérations Z3-Z4 (simule redémarrages post-obstacle)',
+                4: '15 min activation : marche rapide + 5-6 burpees de réveil + 10 squats à vide\nJ-1 race. Activation très courte le matin. Voyage Carcassonne, retrait dossard, repérage si possible. Repas glucides midi + léger soir. Coucher tôt.',
+                5: 'Marche 45 min Z1\nPas de course. Marche plate.',
+                6: '40-50 min Z2 — trail si possible (technique léger), sinon route ou tapis incliné 4-6%\nAllure conversationnelle. Si retour de virus/fatigue, raccourcir à 30 min. Pas d\'accélération.',
+                7: '50-60 min Z2 + 2 accélérations Z3 30s — TRAIL recommandé (préparation Morzine)\nDénivelé léger. Si pas de trail, tapis 6%.',
+                8: '40 min Z2 — trail léger si possible (préparation terrain Morzine), sinon route ou tapis 4-6%\nConversationnel, dénivelé léger pour le genou. 1-2 accélérations courtes max si tout va bien, sinon zéro. 🌡️ Canicule : si pic >35°C, basculer sur tapis incliné en salle clim ou décaler avant 8h. Sinon raccourcir et hydrater +++.',
+                9: '🏁 SPARTAN SPRINT — Morzine\nJour J ! 5 km, ~20 obstacles. Échauffement 15 min + spécifique (genou, grip). Hydratation +sodium. Vu la reprise post-Covid : pars prudent, accélère si les sensations sont bonnes. Bonne course !',
+                10: '40 min Z2 plat souple, allure conversationnelle\nReprise course en douceur. Écouter l\'ischio gauche.',
+                11: 'Sortie longue progressive : S2 (18/07) 60-70 min · S3 (25/07) 75-90 min + D+ 250m · S4 (01/08) 90-105 min + D+ 300m\nTrail dès que possible, descentes en pas courts. 🌡️ Départ avant 9h par forte chaleur.',
+                12: 'S5 (08/08) : 75-90 min vallonné · S6 (15/08) : 1h30-1h45 course/marche mixte\nLA séance non négociable des vacances. Dunes/escaliers = D+ gratuit.',
+                13: 'Sorties longues Beast : S7 (22/08) 2h-2h15 D+ 400-500m + test nutrition n°1 · S8 (29/08) 2h30 D+ 500-600m, vest complète · S9 (05/09) 2h45-3h D+ 600m — RÉPÉTITION GÉNÉRALE\n40-60g glucides/h dès 45\', 500-750 ml/h, 1 SaltStick/45\' après 1h. Z2 strict, marche en côte, genouillère.',
+                14: 'S10 (12/09) : 75-90 min Z2 D+ léger — dernière sortie longue · S11 (19/09) : 🏁 SUPER JABLINES\nJour J : km 1-3 à 70-75% FCmax, puis 78-82%. Marche 30s + magnésie avant chaque suspension. Objectifs : ≥85% obstacles, 1ère Rope Climb (J-hook, monter aux jambes), chrono <2h30. Bonne course !',
+                15: '26/09 : 60-75 min Z2 très facile OU repos si fatigue · 03/10 : 🏁 BEAST ESTÉREL\nJour J Beast (~4h30-5h30) : Z2 strict 3 premières heures (FC ≤140-145), marche TOUTES les côtes, pas courts en descente + genouillère, nutrition dès 45\', gel caféiné km 15. Pénalités = récupération. Objectif : finir proprement. Bonne course !'
+            }
+        },
+        0: { // Dimanche
+            label: 'Hyrox', type: 'hyrox', color: '#f0a500', icon: '⚡',
+            phases: {
+                1: 'Séance Hyrox externe — 1h (dimanche matin)',
+                2: 'Séance Hyrox externe — 1h (dimanche matin)',
+                3: 'Séance Hyrox externe — 1h (dimanche matin)',
+                4: '🏁 SPARTAN RACE SUPER — Carcassonne\nJour J ! 10 km, 25 obstacles. Échauffement progressif 15 min. Hydratation +sodium dès le réveil. Bonne course, Spartan !',
+                5: 'Repos OU Hyrox externe TRÈS facile selon ressenti\nRecovery week. Repos complet si fatigue.',
+                6: '⚠️ Cette semaine (24/05) : remplacement Hyrox (pas d\'accès club).\nÉchauffement 15 min vélo/elliptique + mobilité épaules/dos · Bloc 1 Grip (4 tours, repos 90s) : Dead hang 30s + Farmer 40m @ 2×22,5-25 kg + Towel Hang 15-20s · Bloc 2 Technique (4 tours, repos 60s) : Rope Pull 10 reps @ 22,5-25 kg + Tirage horizontal 10 reps @ 40-45 kg + Step-ups box haut 8/j @ 2×8-10 kg · Finisher 15 min vélo Z2 + 3×30s plus rapide\nRPE max 6. Ciblé bêtes noires Carcassonne. Semaine prochaine (31/05) : retour Hyrox externe.',
+                7: 'Séance Hyrox externe — 1h + sortie trail technique 30-45 min si possible\nDouble session. Trail technique pour acclimater le genou aux descentes.',
+                8: 'Séance modérée RPE 6 max : Hyrox léger OU répétition générale contrôlée (3-4 km + quelques obstacles en gestion)\nPAS de simulation à intensité course (post-Covid). Dernier marqueur avant décision Morzine : note souffle, FC, jambes, genou. Repos si fatigue. 🌡️ Canicule : salle climatisée de préférence. La chaleur fausse le marqueur (FC haute = normale), ne pas surinterpréter ; chaleur + fatigue = repos.',
+                9: 'Récupération active : marche légère 30 min + mobilité + étirements\nJ+1 Morzine. Récupération douce. Bilan de course (obstacles, genou, souffle) pour caler la prépa Jablines (19 sept).',
+                10: 'Hyrox léger RPE 5-6 OU repos complet selon ressenti\nJ+8 course. Si le corps dit repos, c\'est repos.',
+                11: 'Séance Hyrox externe — 1h RPE 7 + rappel grip court (dead hang cumulé 60-90s)\n3e stimulus grip hebdo, léger. Pousser les portés.',
+                12: 'Rando 1h30-2h (dénivelé si possible) OU Hyrox si accessible\nVolume « caché » spécifique Beast : du temps debout sur terrain varié.',
+                13: 'Hyrox externe 1h RPE 7-8 + finisher OCR : 3×(farmer lourd 40m + 10 négatives/rows + 15 burpees) · Dim 06/09 à la place : SIMULATION course — 8-10 km trail, atelier toutes les 10 min\nObstacles sous fatigue = réalité course. 06/09 = répétition générale format Super.',
+                14: 'S10 (13/09) : Hyrox léger RPE 5-6 — dernière vraie stimulation avant Jablines\nDimanche suivant (20/09) = Phase 15, J+1 Super.',
+                15: '20/09 : J+1 Super — marche 30 min + bilan course · 27/09 : marche 45 min ou Hyrox très léger + ✅ GO/NO-GO Beast (genou, dos, fatigue : 2 voyants orange → mode finisher ou renoncement sans regret) · 04/10 : J+1 Beast — récup (sauna + froid + Normatec) et bilan de saison 🎉'
+            }
+        }
+    }
+};
+
+const joursFR = ['Dim', 'Lun', 'Mar', 'Mer', 'Jeu', 'Ven', 'Sam'];
+const joursFullFR = ['Dimanche', 'Lundi', 'Mardi', 'Mercredi', 'Jeudi', 'Vendredi', 'Samedi'];
+const moisFR = ['janv', 'fév', 'mars', 'avril', 'mai', 'juin', 'juil', 'août', 'sept', 'oct', 'nov', 'déc'];
+
+// ===== Date helpers =====
+const START_DATE = new Date(2026, 2, 30); // March 30, 2026 (Monday)
+const END_DATE = new Date(2026, 9, 4);    // October 4, 2026 (end of Jablines-Estérel cycle)
+
+function dateKey(d) {
+    return d.getFullYear() + '-' + String(d.getMonth()+1).padStart(2,'0') + '-' + String(d.getDate()).padStart(2,'0');
+}
+
+function parseDate(key) {
+    const [y,m,d] = key.split('-').map(Number);
+    return new Date(y, m-1, d);
+}
+
+function isSameDay(a, b) {
+    return a.getFullYear() === b.getFullYear() && a.getMonth() === b.getMonth() && a.getDate() === b.getDate();
+}
+
+function getPhaseForDate(d) {
+    for (const p of trainingPlan.phases) {
+        const start = parseDate(p.start);
+        const end = parseDate(p.end);
+        end.setHours(23,59,59);
+        if (d >= start && d <= end) return p.num;
+    }
+    return 1;
+}
+
+function getPlannedWorkout(d) {
+    const dow = d.getDay();
+    const dayPlan = trainingPlan.days[dow];
+    if (!dayPlan) return null;
+    const phase = getPhaseForDate(d);
+    return {
+        label: dayPlan.label,
+        type: dayPlan.type,
+        color: dayPlan.color,
+        icon: dayPlan.icon,
+        detail: dayPlan.phases[phase] || ''
+    };
+}
+
+// Generate all training days
+function getAllDays() {
+    const days = [];
+    const d = new Date(START_DATE);
+    while (d <= END_DATE) {
+        days.push(new Date(d));
+        d.setDate(d.getDate() + 1);
+    }
+    return days;
+}
+
+// Group into weeks (Mon-Sun)
+function getWeeks() {
+    const days = getAllDays();
+    const weeks = [];
+    let currentWeek = [];
+    for (const d of days) {
+        if (d.getDay() === 1 && currentWeek.length > 0) {
+            weeks.push(currentWeek);
+            currentWeek = [];
+        }
+        currentWeek.push(d);
+    }
+    if (currentWeek.length > 0) weeks.push(currentWeek);
+    return weeks;
+}
+
+// ===== Storage =====
+const STORAGE_KEY = 'spartan-journal-data';
+
+function loadData() {
+    try {
+        const raw = localStorage.getItem(STORAGE_KEY);
+        return raw ? JSON.parse(raw) : {};
+    } catch { return {}; }
+}
+
+function saveData(data) {
+    localStorage.setItem(STORAGE_KEY, JSON.stringify(data));
+}
+
+function getDayData(key) {
+    const data = loadData();
+    return data[key] || { status: null, replacement: '', comment: '', tags: [], rpe: 0, hyroxDetail: '' };
+}
+
+function setDayData(key, dayData) {
+    const data = loadData();
+    data[key] = dayData;
+    saveData(data);
+}
+
+// ===== State =====
+let currentWeekIdx = 0;
+let openDayKey = null;
+const weeks = getWeeks();
+
+// Determine current week
+(function() {
+    const today = new Date();
+    for (let i = 0; i < weeks.length; i++) {
+        const weekStart = weeks[i][0];
+        const weekEnd = weeks[i][weeks[i].length - 1];
+        if (today >= weekStart && today <= weekEnd) { currentWeekIdx = i; return; }
+    }
+    // Default to first incomplete week or last week
+    currentWeekIdx = 0;
+})();
+
+// ===== Render =====
+function renderWeekNav() {
+    const nav = document.getElementById('weekNav');
+    const data = loadData();
+
+    nav.innerHTML = weeks.map((week, idx) => {
+        const startD = week[0];
+        const endD = week[week.length - 1];
+        const phase = getPhaseForDate(startD);
+        const label = `S${idx+1}`;
+
+        // Count completed
+        let done = 0, total = week.length;
+        week.forEach(d => {
+            const dd = data[dateKey(d)];
+            if (dd && dd.status) done++;
+        });
+        const progress = done > 0 ? ` ${done}/${total}` : '';
+
+        return `<div class="week-pill ${idx === currentWeekIdx ? 'active' : ''}" onclick="selectWeek(${idx})">
+            ${label} · P${phase}<span class="week-progress">${progress}</span>
+        </div>`;
+    }).join('');
+}
+
+function renderStats() {
+    const data = loadData();
+    let done = 0, replaced = 0, skipped = 0, total = 0;
+    const allDays = getAllDays();
+    const today = new Date();
+
+    allDays.forEach(d => {
+        if (d > today) return;
+        total++;
+        const dd = data[dateKey(d)];
+        if (dd) {
+            if (dd.status === 'done') done++;
+            else if (dd.status === 'replaced') replaced++;
+            else if (dd.status === 'skipped') skipped++;
+        }
+    });
+
+    const adherence = total > 0 ? Math.round(((done + replaced) / total) * 100) : 0;
+
+    document.getElementById('statsBar').innerHTML = `
+        <div class="stat-chip"><span class="stat-num">${done}</span> <span class="stat-label">faites</span></div>
+        <div class="stat-chip"><span class="stat-num">${replaced}</span> <span class="stat-label">rempl.</span></div>
+        <div class="stat-chip"><span class="stat-num">${skipped}</span> <span class="stat-label">manquées</span></div>
+        <div class="stat-chip"><span class="stat-num">${adherence}%</span> <span class="stat-label">adhérence</span></div>
+    `;
+}
+
+function statusIcon(status) {
+    if (status === 'done') return '✅';
+    if (status === 'replaced') return '🔄';
+    if (status === 'skipped') return '❌';
+    return '○';
+}
+
+function renderContent() {
+    const container = document.getElementById('content');
+    const week = weeks[currentWeekIdx];
+    const today = new Date();
+    const data = loadData();
+
+    let html = '';
+
+    week.forEach(d => {
+        const key = dateKey(d);
+        const isToday = isSameDay(d, today);
+        const workout = getPlannedWorkout(d);
+        const dd = data[key] || { status: null, replacement: '', comment: '', tags: [], rpe: 0 };
+        const isOpen = openDayKey === key;
+        const isPast = d < today && !isToday;
+        const isFuture = d > today;
+
+        const dayNum = d.getDate();
+        const dayName = joursFullFR[d.getDay()];
+        const month = moisFR[d.getMonth()];
+
+        html += `<div class="day-card ${isToday ? 'today' : ''} ${isOpen ? 'open' : ''}" id="card-${key}">
+            <div class="day-card-header" onclick="toggleDay('${key}')">
+                <div class="day-date">${dayNum}<br><span style="font-size:10px;color:var(--text-muted);font-weight:500">${month}</span></div>
+                <div class="day-type-dot" style="background:${workout ? workout.color : '#555'}"></div>
+                <div class="day-name">${dayName} — ${workout ? workout.icon + ' ' + workout.label : 'Repos'}</div>
+                <div class="day-status-icon">${statusIcon(dd.status)}</div>
+            </div>
+            <div class="day-card-body">
+                ${workout ? `
+                    <div class="planned-label">Séance prévue</div>
+                    <div class="planned-workout">${workout.detail.replace(/·/g, '<br>·').replace(/\n/g, '<br>')}</div>
+                ` : '<div class="planned-label">Jour de repos</div>'}
+
+                ${workout && workout.type === 'hyrox' ? `
+                <div class="hyrox-detail-section">
+                    <div class="hyrox-badge">⚡ Contenu de la séance Hyrox</div>
+                    <textarea class="hyrox-input" placeholder="Ex: 8 rounds — 200m run + 200m SkiErg + 200m row + 50m farmer carry\nExercices spécifiques, durées, charges, sensations..." oninput="updateField('${key}', 'hyroxDetail', this.value)">${dd.hyroxDetail || ''}</textarea>
+                </div>
+                ` : ''}
+
+                <div class="planned-label">Statut</div>
+                <div class="status-group">
+                    <button class="status-btn ${dd.status === 'done' ? 'selected-done' : ''}" onclick="setStatus('${key}', 'done')">
+                        <span class="status-emoji">✅</span>Faite
+                    </button>
+                    <button class="status-btn ${dd.status === 'replaced' ? 'selected-replaced' : ''}" onclick="setStatus('${key}', 'replaced')">
+                        <span class="status-emoji">🔄</span>Remplacée
+                    </button>
+                    <button class="status-btn ${dd.status === 'skipped' ? 'selected-skipped' : ''}" onclick="setStatus('${key}', 'skipped')">
+                        <span class="status-emoji">❌</span>Pas de séance
+                    </button>
+                </div>
+
+                <div class="replacement-section ${dd.status === 'replaced' ? 'visible' : ''}" id="repl-${key}">
+                    <div class="input-label">Séance de remplacement</div>
+                    <textarea class="text-input" placeholder="Décris la séance effectuée..." oninput="updateField('${key}', 'replacement', this.value)">${dd.replacement || ''}</textarea>
+                </div>
+
+                <div class="rpe-section" ${dd.status === 'done' || dd.status === 'replaced' ? '' : 'style="display:none"'} id="rpe-${key}">
+                    <div class="input-label">Intensité ressentie (RPE)</div>
+                    <div class="rpe-row">
+                        <input type="range" class="rpe-slider" min="0" max="10" step="1" value="${dd.rpe || 0}"
+                            oninput="updateRPE('${key}', this.value)">
+                        <div class="rpe-value" id="rpe-val-${key}" style="color:${rpeColor(dd.rpe || 0)}">${dd.rpe || 0}</div>
+                    </div>
+                    <div class="rpe-label">${rpeLabel(dd.rpe || 0)}</div>
+                </div>
+
+                <div class="comment-section">
+                    <div class="input-label">Commentaires</div>
+                    <div class="tag-row">
+                        <span class="tag tag-top ${(dd.tags||[]).includes('top') ? 'active' : ''}" onclick="toggleTag('${key}', 'top')">🔥 Top forme</span>
+                        <span class="tag tag-fatigue ${(dd.tags||[]).includes('fatigue') ? 'active' : ''}" onclick="toggleTag('${key}', 'fatigue')">😴 Fatigue</span>
+                        <span class="tag tag-blessure ${(dd.tags||[]).includes('blessure') ? 'active' : ''}" onclick="toggleTag('${key}', 'blessure')">🤕 Douleur</span>
+                        <span class="tag tag-sommeil ${(dd.tags||[]).includes('sommeil') ? 'active' : ''}" onclick="toggleTag('${key}', 'sommeil')">😶‍🌫️ Mal dormi</span>
+                        <span class="tag tag-stress ${(dd.tags||[]).includes('stress') ? 'active' : ''}" onclick="toggleTag('${key}', 'stress')">🧠 Stress</span>
+                    </div>
+                    <textarea class="comment-input" placeholder="Sensations, blessures, ajustements..." oninput="updateField('${key}', 'comment', this.value)">${dd.comment || ''}</textarea>
+                </div>
+            </div>
+        </div>`;
+    });
+
+    html += `<button class="export-btn" onclick="exportData()">📤 Exporter le journal (JSON)</button>`;
+
+    container.innerHTML = html;
+}
+
+function rpeColor(v) {
+    if (v <= 3) return '#22c980';
+    if (v <= 6) return '#f0a500';
+    return '#e63946';
+}
+
+function rpeLabel(v) {
+    const labels = ['Repos', 'Très facile', 'Facile', 'Modéré', 'Assez dur', 'Dur', 'Difficile', 'Très difficile', 'Extrême', 'Max', 'Limite'];
+    return labels[v] || '';
+}
+
+// ===== Actions =====
+function selectWeek(idx) {
+    currentWeekIdx = idx;
+    openDayKey = null;
+    renderWeekNav();
+    renderContent();
+    renderStats();
+}
+
+function toggleDay(key) {
+    openDayKey = openDayKey === key ? null : key;
+    renderContent();
+    // Scroll to card
+    if (openDayKey) {
+        setTimeout(() => {
+            const el = document.getElementById('card-' + key);
+            if (el) el.scrollIntoView({ behavior: 'smooth', block: 'start' });
+        }, 50);
+    }
+}
+
+function setStatus(key, status) {
+    const dd = getDayData(key);
+    // Toggle off if same
+    dd.status = dd.status === status ? null : status;
+    setDayData(key, dd);
+    renderContent();
+    renderWeekNav();
+    renderStats();
+}
+
+function updateField(key, field, value) {
+    const dd = getDayData(key);
+    dd[field] = value;
+    setDayData(key, dd);
+}
+
+function updateRPE(key, value) {
+    const dd = getDayData(key);
+    dd.rpe = parseInt(value);
+    setDayData(key, dd);
+    const el = document.getElementById('rpe-val-' + key);
+    if (el) {
+        el.textContent = value;
+        el.style.color = rpeColor(value);
+    }
+    // Update label
+    const rpeSection = document.getElementById('rpe-' + key);
+    if (rpeSection) {
+        const lbl = rpeSection.querySelector('.rpe-label');
+        if (lbl) lbl.textContent = rpeLabel(parseInt(value));
+    }
+}
+
+function toggleTag(key, tag) {
+    const dd = getDayData(key);
+    if (!dd.tags) dd.tags = [];
+    const idx = dd.tags.indexOf(tag);
+    if (idx === -1) dd.tags.push(tag);
+    else dd.tags.splice(idx, 1);
+    setDayData(key, dd);
+    renderContent();
+}
+
+function exportData() {
+    const data = loadData();
+    const blob = new Blob([JSON.stringify(data, null, 2)], { type: 'application/json' });
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement('a');
+    a.href = url;
+    a.download = 'spartan-journal-' + dateKey(new Date()) + '.json';
+    a.click();
+    URL.revokeObjectURL(url);
+}
+
+// ===== Init =====
+function init() {
+    renderWeekNav();
+    renderStats();
+    renderContent();
+
+    // Auto-open today
+    const today = new Date();
+    const key = dateKey(today);
+    const allDays = getAllDays();
+    if (allDays.some(d => isSameDay(d, today))) {
+        openDayKey = key;
+        renderContent();
+        setTimeout(() => {
+            const el = document.getElementById('card-' + key);
+            if (el) el.scrollIntoView({ behavior: 'smooth', block: 'start' });
+        }, 100);
+    }
+}
+
+if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', init);
+} else {
+    init();
+}
+</script>
+</body>
+</html>
